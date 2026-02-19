@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
+/* ============================= */
+/* Premium Dental Theme */
+/* ============================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ================= BRAND ================= */
+  --primary: #1F3F55;
+  --primary-dark: #183243;
+  --accent: #2FA4C5;
+  --accent-hover: #2389A7;
+
+  /* ================= BACKGROUND ================= */
+  --background: #F7FBFE;
+  --white: #FFFFFF;
+  --border-light: #E6EEF3;
+
+  /* ================= TEXT ================= */
+  --heading: #0F2A3B;
+  --text: #5E6E7E;
+
+  /* ================= TESTIMONIAL PAGE ================= */
+  --testimonial-bg: #F5FAFD;
+  --testimonial-card-bg: #FFFFFF;
+  --testimonial-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+
+  --testimonial-heading: #0F2A3B;
+  --testimonial-text: #5E6E7E;
+
+  --testimonial-accent: #2FA4C5;
+  --testimonial-border: #E6EEF3;
+
+  --testimonial-star: #F4B400;
+
+  /* ================= CONTACT PAGE ================= */
+  --contact-bg: #F4FAFD;
+  --contact-card-bg: #FFFFFF;
+  --contact-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  --contact-border: var(--border-light);
+
+  --contact-heading: var(--heading);
+  --contact-text: var(--text);
+  --contact-accent: var(--accent);
+  --contact-btn-bg: var(--accent);
+  --contact-btn-hover: var(--accent-hover);
+
+  /* ================= FOOTER ================= */
+  --footer-bg: var(--primary);
+  --footer-heading: #FFFFFF;
+  --footer-text: #D9E6ED; /* Improved contrast */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ============================= */
+/* Base Styles */
+/* ============================= */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  font-family: var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Section Spacing */
+
+section {
+  padding: 80px 0;
+}
+
+/* ============================= */
+/* Buttons */
+/* ============================= */
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* ============================= */
+/* Form Elements */
+/* ============================= */
+
+input,
+textarea {
+  outline: none;
+  transition: 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47, 164, 197, 0.15);
+}
+
+/* ============================= */
+/* Utility Enhancements */
+/* ============================= */
+
+.container-max {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================= */
+/* Contact Page */
+/* ============================= */
+
+.contact-btn {
+  background: var(--contact-btn-bg);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background: var(--contact-btn-hover);
+  transform: translateY(-2px);
 }
