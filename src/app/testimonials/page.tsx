@@ -47,7 +47,7 @@ export default function TestimonialsPage() {
     <div className="bg-[var(--testimonial-bg)]">
 
       {/* ===== Hero Section ===== */}
-      <section className="text-center py-20 px-6">
+      <section className="text-center pt-20 px-6">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
