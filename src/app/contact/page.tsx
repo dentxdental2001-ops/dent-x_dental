@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 export default function ContactPage() {
   return (
     <div className="bg-[var(--contact-bg)] px-6">
-
       {/* ===== Hero Section ===== */}
       <section className="text-center px-4 sm:px-6 pt-16 sm:pt-20 pb-6">
         <motion.h1
