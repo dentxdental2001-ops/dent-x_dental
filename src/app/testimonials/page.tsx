@@ -44,7 +44,7 @@ export default function TestimonialsPage() {
   ];
 
   return (
-    <div className="bg-[var(--testimonial-bg)]">
+    <div className="bg-[var(--testimonial-bg)] px-6">
 
       {/* ===== Hero Section ===== */}
       <section className="text-center pt-20 px-6">
