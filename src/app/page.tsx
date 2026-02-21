@@ -247,27 +247,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= FINAL CTA ================= */}
-      <section className="py-32 bg-[var(--accent)] text-white">
-        <div className="container-max text-center">
-          <h3 className="text-3xl font-semibold mb-6">
-            Experience Precision Dentistry
-          </h3>
-
-          <p className="max-w-xl mx-auto mb-10 opacity-90">
-            Schedule your appointment today and let our experts redefine your
-            smile with care, precision and confidence.
-          </p>
-
-          <Link
-            href="/contact"
-            className="bg-white text-[var(--accent)] px-8 py-3 rounded-full font-medium hover:scale-105 transition"
-          >
-            Schedule Visit →
-          </Link>
-        </div>
-      </section>
-
     </div>
   );
 }

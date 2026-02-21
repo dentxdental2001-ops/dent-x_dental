@@ -1,63 +1,59 @@
 @import "tailwindcss";
 
-/* ============================= */
-/* Premium Dental Theme */
-/* ============================= */
+/* ===================================================== */
+/* DENT-X — PREMIUM GREEN DENTAL THEME */
+/* ===================================================== */
 
 :root {
   /* ================= BRAND ================= */
-  --primary: #1F3F55;
-  --primary-dark: #183243;
-  --accent: #2FA4C5;
-  --accent-hover: #2389A7;
+  --primary: #1E4D3A;          /* Deep forest green */
+  --primary-dark: #163B2C;
+  --accent: #2E8B57;           /* Fresh emerald green */
+  --accent-hover: #256F47;
 
   /* ================= BACKGROUND ================= */
-  --background: #F7FBFE;
+  --background: #F4FAF7;       /* Soft mint white */
   --white: #FFFFFF;
-  --border-light: #E6EEF3;
+  --border-light: #DDEBE4;
 
   /* ================= TEXT ================= */
-  --heading: #0F2A3B;
-  --text: #5E6E7E;
-
- 
+  --heading: #143D2E;
+  --text: #5F746A;
 
   --services-section-bg: #FFFFFF;
 
-  /* ================= TESTIMONIAL PAGE ================= */
-  --testimonial-bg: #F5FAFD;
+  /* ================= TESTIMONIAL ================= */
+  --testimonial-bg: #EEF6F2;
   --testimonial-card-bg: #FFFFFF;
-  --testimonial-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+  --testimonial-shadow: 0 12px 30px rgba(20, 61, 46, 0.08);
 
-  --testimonial-heading: #0F2A3B;
-  --testimonial-text: #5E6E7E;
-
-  --testimonial-accent: #2FA4C5;
-  --testimonial-border: #E6EEF3;
-
+  --testimonial-heading: #143D2E;
+  --testimonial-text: #5F746A;
+  --testimonial-accent: #2E8B57;
+  --testimonial-border: #DDEBE4;
   --testimonial-star: #F4B400;
 
-  /* ================= CONTACT PAGE ================= */
-  --contact-bg: #F4FAFD;
+  /* ================= CONTACT ================= */
+  --contact-bg: #F2F8F5;
   --contact-card-bg: #FFFFFF;
-  --contact-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-  --contact-border: var(--border-light);
+  --contact-card-shadow: 0 12px 30px rgba(20, 61, 46, 0.08);
+  --contact-border: #DDEBE4;
 
-  --contact-heading: var(--heading);
-  --contact-text: var(--text);
-  --contact-accent: var(--accent);
-  --contact-btn-bg: var(--accent);
-  --contact-btn-hover: var(--accent-hover);
+  --contact-heading: #143D2E;
+  --contact-text: #5F746A;
+  --contact-accent: #2E8B57;
+  --contact-btn-bg: #2E8B57;
+  --contact-btn-hover: #256F47;
 
   /* ================= FOOTER ================= */
-  --footer-bg: var(--primary);
+  --footer-bg: #1E4D3A;
   --footer-heading: #FFFFFF;
-  --footer-text: #D9E6ED; /* Improved contrast */
+  --footer-text: #CFE4DA;
 }
 
-/* ============================= */
-/* Base Styles */
-/* ============================= */
+/* ===================================================== */
+/* BASE STYLES */
+/* ===================================================== */
 
 html {
   scroll-behavior: smooth;
@@ -68,6 +64,7 @@ body {
   color: var(--text);
   font-family: var(--font-geist-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Headings */
@@ -84,9 +81,9 @@ section {
   padding: 80px 0;
 }
 
-/* ============================= */
-/* Buttons */
-/* ============================= */
+/* ===================================================== */
+/* BUTTONS */
+/* ===================================================== */
 
 .btn-primary {
   background: var(--accent);
@@ -102,25 +99,26 @@ section {
   transform: translateY(-2px);
 }
 
-/* ============================= */
-/* Form Elements */
-/* ============================= */
+/* ===================================================== */
+/* FORM ELEMENTS */
+/* ===================================================== */
 
 input,
 textarea {
   outline: none;
   transition: 0.2s ease;
+  border: 1px solid var(--border-light);
 }
 
 input:focus,
 textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(47, 164, 197, 0.15);
+  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.15);
 }
 
-/* ============================= */
-/* Utility Enhancements */
-/* ============================= */
+/* ===================================================== */
+/* UTILITIES */
+/* ===================================================== */
 
 .container-max {
   max-width: 1280px;
@@ -128,9 +126,9 @@ textarea:focus {
   padding: 0 24px;
 }
 
-/* ============================= */
-/* Contact Page */
-/* ============================= */
+/* ===================================================== */
+/* CONTACT BUTTON */
+/* ===================================================== */
 
 .contact-btn {
   background: var(--contact-btn-bg);
