@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
@@ -16,12 +16,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dentxdental.com"),
+
   title: {
     default: "Dent-X Dental Clinic | Best Dentist in Rajkot",
     template: "%s | Dent-X Dental",
   },
+
   description:
     "Dent-X Dental Clinic in Rajkot offers Root Canal, Dental Implants, Teeth Whitening, Braces & Smile Designing. 17+ years of trusted dental care with 65,000+ happy patients.",
+
   keywords: [
     "Dentist in Rajkot",
     "Dental Clinic Rajkot",
@@ -31,9 +35,10 @@ export const metadata: Metadata = {
     "Braces in Rajkot",
     "Smile Designing",
   ],
+
   authors: [{ name: "Dent-X Dental" }],
   creator: "Dent-X Dental",
-  metadataBase: new URL("https://dentxdental.com"), // change when domain is live
+
   openGraph: {
     title: "Dent-X Dental Clinic | Your Smile, Our Passion",
     description:
@@ -43,23 +48,40 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
   },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Dent-X Dental Clinic | Best Dentist in Rajkot",
+    description:
+      "17+ years of trusted dental care in Rajkot. Root Canal, Implants, Braces & Smile Designing.",
+  },
+
   icons: {
     icon: "/favicon.ico",
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-[#1A364D]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Header />
-        <main>{children}</main>
+
+        <main className="flex-1">
+          {children}
+        </main>
+
         <Footer />
         <WhatsAppButton />
       </body>

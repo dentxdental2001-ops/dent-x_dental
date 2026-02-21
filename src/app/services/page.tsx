@@ -150,16 +150,6 @@ export default function ServicesPage() {
                         </div>
 
                       </div>
-
-                      {/* CTA */}
-                      <div className="mt-10">
-                        <a
-                          href="/contact"
-                          className="inline-flex items-center gap-2 bg-[var(--accent)] text-white px-6 py-3 rounded-full shadow hover:scale-105 transition"
-                        >
-                          Book Consultation →
-                        </a>
-                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
