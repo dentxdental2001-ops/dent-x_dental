@@ -10,6 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
 
 
 function Counter({ target }: { target: number }) {
@@ -36,76 +37,37 @@ function Counter({ target }: { target: number }) {
   return <span>{count.toLocaleString()}+</span>;
 }
 
-function BeforeAfterSlider({
-  before,
-  after,
-  title,
-  description,
-}: {
-  before: string;
-  after: string;
-  title: string;
-  description: string;
-}) {
-  const [position, setPosition] = useState(50);
-
-  return (
-    <div
-      className="relative w-full h-80 overflow-hidden rounded-3xl border"
-      style={{
-        borderColor: "var(--border-light)",
-        boxShadow: "0 15px 40px rgba(0,0,0,0.08)",
-      }}
-    >
-      {/* Before Image */}
-      <img
-        src={before}
-        alt="Before"
-        className="absolute w-full h-full object-cover"
-      />
-
-      {/* After Image */}
-      <div
-        className="absolute top-0 left-0 h-full overflow-hidden"
-        style={{ width: `${position}%` }}
-      >
-        <img
-          src={after}
-          alt="After"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Slider Line */}
-      <div
-        className="absolute top-0 h-full w-1 bg-white"
-        style={{ left: `${position}%`, transform: "translateX(-50%)" }}
-      />
-
-      {/* Range Input */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={position}
-        onChange={(e) => setPosition(Number(e.target.value))}
-        className="absolute w-full h-full opacity-0 cursor-ew-resize"
-      />
-
-      {/* Labels */}
-      <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs font-medium">
-        After
-      </div>
-
-      <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs font-medium">
-        Before
-      </div>
-    </div>
-  );
+interface BeforeAfter {
+  _id: string;
+  beforeImage: string;
+  afterImage: string;
+  treatment: string;
+  createdAt: string;
 }
 
 export default function HomePage() {
   const [activeFAQ, setActiveFAQ] = useState<number | null>(0);
+  const [beforeAfters, setBeforeAfters] = useState<BeforeAfter[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLatestBeforeAfters();
+  }, []);
+
+  const fetchLatestBeforeAfters = async () => {
+    try {
+      const response = await fetch('/api/before-after?limit=2');
+      const data = await response.json();
+      
+      if (data.success) {
+        setBeforeAfters(data.data.beforeAfters);
+      }
+    } catch (error) {
+      console.error('Failed to fetch before/after data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const faqs = [
     {
@@ -339,39 +301,38 @@ export default function HomePage() {
       Experience the difference precision dentistry makes.
     </p>
 
-    <div className="grid md:grid-cols-2 gap-16">
-
-      <div>
-        <BeforeAfterSlider
-          before="/before1.png"
-          after="/after1.png"
-          title="Smile Makeover"
-          description="Veneers & Whitening"
-        />
-        <div className="mt-6 text-center">
-          <h4 className="font-semibold">Smile Makeover</h4>
-          <p className="text-sm text-[var(--text)] mt-2">
-            Veneers & whitening transformation.
-          </p>
-        </div>
+    {loading ? (
+      <div className="text-center py-16">
+        <div className="inline-block w-8 h-8 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-[var(--text)]">Loading transformations...</p>
       </div>
-
-      <div>
-        <BeforeAfterSlider
-          before="/before2.png"
-          after="/after2.png"
-          title="Dental Implants"
-          description="Full Restoration"
-        />
-        <div className="mt-6 text-center">
-          <h4 className="font-semibold">Dental Implants</h4>
-          <p className="text-sm text-[var(--text)] mt-2">
-            Complete tooth replacement restoration.
-          </p>
+    ) : beforeAfters.length > 0 ? (
+      <>
+        <div className="grid md:grid-cols-2 gap-16">
+          {beforeAfters.map((item) => (
+            <BeforeAfterSlider
+              key={item._id}
+              before={item.beforeImage}
+              after={item.afterImage}
+              treatment={item.treatment}
+            />
+          ))}
         </div>
+        
+        <div className="text-center mt-16">
+          <Link
+            href="/gallery"
+            className="btn-primary"
+          >
+            View All Transformations
+          </Link>
+        </div>
+      </>
+    ) : (
+      <div className="text-center py-16">
+        <p className="text-[var(--text)]">No transformations available yet.</p>
       </div>
-
-    </div>
+    )}
 
   </div>
 </section>

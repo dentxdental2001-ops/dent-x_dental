@@ -1,6 +1,5 @@
 export const servicesData = [
   {
-    slug: "single-visit-root-canal",
     title: "Single Visit Root Canal",
     short: "Advanced microscopic root canal treatment in a single appointment.",
     detail: {
@@ -14,7 +13,7 @@ export const servicesData = [
   },
 
   {
-    slug: "dental-implants",
+
     title: "Dental Implants",
     short: "Permanent and natural-looking solution for missing teeth.",
     detail: {
@@ -28,7 +27,7 @@ export const servicesData = [
   },
 
   {
-    slug: "crowns-bridges",
+
     title: "Crowns & Bridges",
     short: "Restore strength and aesthetics with custom restorations.",
     detail: {
@@ -42,7 +41,7 @@ export const servicesData = [
   },
 
   {
-    slug: "wisdom-tooth-removal",
+
     title: "Wisdom Tooth Removal",
     short: "Safe and comfortable surgical extraction procedures.",
     detail: {
@@ -56,7 +55,7 @@ export const servicesData = [
   },
 
   {
-    slug: "braces-aligners",
+
     title: "Braces & Aligners",
     short: "Straighten teeth for better function and aesthetics.",
     detail: {
@@ -70,7 +69,7 @@ export const servicesData = [
   },
 
   {
-    slug: "cosmetic-teeth-whitening",
+
     title: "Cosmetic Teeth Whitening",
     short: "Professional whitening for a brighter smile.",
     detail: {
@@ -84,7 +83,7 @@ export const servicesData = [
   },
 
   {
-    slug: "full-mouth-rehabilitation",
+
     title: "Full Mouth Rehabilitation",
     short: "Comprehensive restoration of oral health and aesthetics.",
     detail: {
@@ -98,7 +97,7 @@ export const servicesData = [
   },
 
   {
-    slug: "flexible-dentures",
+
     title: "Flexible Dentures",
     short: "Lightweight and comfortable removable tooth replacement.",
     detail: {
@@ -112,7 +111,7 @@ export const servicesData = [
   },
 
   {
-    slug: "dental-veneers",
+
     title: "Dental Veneers",
     short: "Enhance smile aesthetics with thin porcelain shells.",
     detail: {
@@ -126,7 +125,7 @@ export const servicesData = [
   },
 
   {
-    slug: "cosmetic-fillings",
+
     title: "Cosmetic Teeth Fillings",
     short: "Tooth-colored fillings for natural restoration.",
     detail: {
@@ -140,7 +139,7 @@ export const servicesData = [
   },
 
   {
-    slug: "pediatric-dentistry",
+
     title: "Pediatric Dentistry",
     short: "Gentle dental care for children.",
     detail: {
