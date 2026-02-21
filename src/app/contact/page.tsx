@@ -63,7 +63,9 @@ export default function ContactPage() {
                   whileHover={{ x: 6 }}
                   className="flex items-start gap-4 group transition-all duration-300"
                 >
-                  <item.icon className="text-[var(--contact-accent)] mt-1 group-hover:scale-110 transition" />
+                  <item.icon
+                    className="w-5 h-5 shrink-0 text-[var(--contact-accent)] mt-1 group-hover:scale-110 transition"
+                  />
                   <div>
                     <h3 className="font-medium text-[var(--contact-heading)] text-sm sm:text-base">
                       {item.title}
@@ -123,22 +125,22 @@ export default function ContactPage() {
 
             {/* Get Directions Button */}
             <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
-  <a
-    href="https://www.google.com/maps?q=Dent-X+Dental+Rajkot"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group relative inline-flex items-center gap-2 
+              <a
+                href="https://www.google.com/maps?q=Dent-X+Dental+Rajkot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center gap-2 
                bg-gradient-to-r from-[var(--contact-btn-bg)] 
                to-[var(--contact-accent)] 
                text-white px-5 sm:px-6 py-2.5 
                rounded-full text-xs sm:text-sm font-medium 
                shadow-lg transition-all duration-300 
                hover:scale-105 hover:shadow-xl"
-  >
-    <MapPin size={16} className="group-hover:rotate-12 transition" />
-    Get Directions
-  </a>
-</div>
+              >
+                <MapPin size={16} className="group-hover:rotate-12 transition" />
+                Get Directions
+              </a>
+            </div>
 
 
             <iframe

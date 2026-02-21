@@ -40,7 +40,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="#"
+                href="https://www.instagram.com/dentx_dentalclinic?igsh=MTRyZ2piOGlubzczNA=="
                 className="p-2 rounded-full transition hover:scale-110"
                 style={{ background: "var(--accent)", color: "white" }}
               >
@@ -48,7 +48,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="#"
+                href="https://www.facebook.com/p/Dent-X-dental-speciality-clinic-100063743275106/"
                 className="p-2 rounded-full transition hover:scale-110"
                 style={{ background: "var(--accent)", color: "white" }}
               >
@@ -132,6 +132,9 @@ export default function Footer() {
                 <a
                   href="https://www.google.com/maps?q=Dent-X+Dental+Rajkot"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-all duration-300 underline-offset-4 hover:underline hover:opacity-90 group-hover:translate-x-1"
+
                 >
                   M205, Amin Marg, Rajkot, Gujarat 360001
                 </a>
