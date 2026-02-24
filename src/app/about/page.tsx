@@ -64,16 +64,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="mb-6 leading-relaxed text-lg">
-              We believe dentistry should be comfortable, transparent,
-              and deeply personalized. Our clinic was founded with a
-              vision to redefine patient experience through modern
-              equipment, ethical practices, and gentle care.
-            </p>
-
-            <p className="leading-relaxed">
-              From preventive dentistry to smile transformations,
-              every procedure is performed with precision, attention
-              to detail, and aesthetic excellence.
+              Your smile is our priority!, we believe that dental care should be a comfortable and positive experience. Our team of dedicated professionals is here to provide you with the highest quality dental services tailored to your individual needs. We utilize cutting-edge dental technology, including digital X-rays, intraoral cameras and scaner, and laser dentistry, to enhance your experience.Our modern tools allow for faster, safer, and more efficient treatments, ensuring you receive the best care possible.
             </p>
           </motion.div>
 
@@ -97,129 +88,129 @@ export default function AboutPage() {
 
 
       {/* ================= CERTIFICATE CAROUSEL ================= */}
-<section style={{ background: "var(--testimonial-bg)" }} className="py-24 overflow-hidden">
-  <div className="container-max text-center">
+      <section style={{ background: "var(--testimonial-bg)" }} className="py-24 overflow-hidden">
+        <div className="container-max text-center">
 
-    <h2 className="text-4xl font-semibold mb-4">
-      Certifications & Professional Excellence
-    </h2>
+          <h2 className="text-4xl font-semibold mb-4">
+            Certifications & Professional Excellence
+          </h2>
 
-    <p className="max-w-2xl mx-auto mb-16 text-lg">
-      We continuously upgrade our expertise through nationally and
-      internationally recognized certifications.
-    </p>
+          <p className="max-w-2xl mx-auto mb-16 text-lg">
+            We continuously upgrade our expertise through nationally and
+            internationally recognized certifications.
+          </p>
 
-    <div className="relative w-full overflow-visible">
+          <div className="relative w-full overflow-visible">
 
-      <motion.div
-        className="flex gap-12"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{
-          repeat: Infinity,
-          duration: 20,
-          ease: "linear",
-        }}
-      >
-        {[...["cert1.jpg", "cert1.jpg", "cert1.jpg", "cert1.jpg"],
-          ...["cert1.jpg", "cert1.jpg", "cert1.jpg", "cert1.jpg"]
-        ].map((cert, i) => (
-          <div
-            key={i}
-            className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
-            style={{ borderColor: "var(--border-light)" }}
-          >
-            {/* Top Accent Line */}
-            <div
-              className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
-              style={{ background: "var(--accent)" }}
-            />
+            <motion.div
+              className="flex gap-12"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                repeat: Infinity,
+                duration: 20,
+                ease: "linear",
+              }}
+            >
+              {[...["cert1.jpg", "cert1.jpg", "cert1.jpg", "cert1.jpg"],
+              ...["cert1.jpg", "cert1.jpg", "cert1.jpg", "cert1.jpg"]
+              ].map((cert, i) => (
+                <div
+                  key={i}
+                  className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
+                  style={{ borderColor: "var(--border-light)" }}
+                >
+                  {/* Top Accent Line */}
+                  <div
+                    className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
+                    style={{ background: "var(--accent)" }}
+                  />
 
-            <div className="relative h-[260px] mt-6">
-              <Image
-                src={`/certificates/${cert}`}
-                alt="Certificate"
-                fill
-                className="object-contain"
-              />
-            </div>
+                  <div className="relative h-[260px] mt-6">
+                    <Image
+                      src={`/certificates/${cert}`}
+                      alt="Certificate"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
 
-            <p className="mt-6 text-sm text-gray-500 text-center">
-              Certified Excellence Program
-            </p>
+                  <p className="mt-6 text-sm text-gray-500 text-center">
+                    Certified Excellence Program
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+
           </div>
-        ))}
-      </motion.div>
-
-    </div>
-  </div>
-</section>
-
-
-            {/* ================= TEAM ================= */}
-<section className="py-24">
-  <div className="container-max text-center">
-
-    <h2 className="text-4xl font-semibold mb-16">
-      Meet Our Specialists
-    </h2>
-
-    {teamLoading ? (
-      <div className="flex items-center justify-center py-12">
-        <div className="inline-flex items-center gap-2 text-[#5E6E7E]">
-          <div className="w-5 h-5 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
-          Loading team members...
         </div>
-      </div>
-    ) : teamError ? (
-      <div className="text-center py-12">
-        <p className="text-red-600">Error loading team members: {teamError}</p>
-      </div>
-    ) : team.length === 0 ? (
-      <div className="text-center py-12">
-        <p className="text-[#5E6E7E]">No team members available at the moment.</p>
-      </div>
-    ) : (
-      <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
-        {team.map((member, index) => (
-          <motion.div
-            key={member._id}
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -12 }}
-            className="bg-white/80 backdrop-blur-lg p-12 rounded-3xl shadow-2xl border relative transition-all"
-            style={{ borderColor: "var(--border-light)" }}
-          >
+      </section>
 
-            {/* Experience Badge */}
-            <div className="absolute top-6 right-6 text-xs px-4 py-2 rounded-full"
-                 style={{ background: "var(--accent)", color: "white" }}>
-              {calculateExperience(member.startYear)}+ Years Experience
+
+      {/* ================= TEAM ================= */}
+      <section className="py-24">
+        <div className="container-max text-center">
+
+          <h2 className="text-4xl font-semibold mb-16">
+            Meet Our Specialists
+          </h2>
+
+          {teamLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="inline-flex items-center gap-2 text-[#5E6E7E]">
+                <div className="w-5 h-5 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+                Loading team members...
+              </div>
             </div>
-
-            <div className="relative w-44 h-44 mx-auto mb-8 rounded-full overflow-hidden border-4"
-                 style={{ borderColor: "var(--accent)" }}>
-              <Image
-                src={member.image}
-                alt={member.name}
-                fill
-                className="object-cover"
-              />
+          ) : teamError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">Error loading team members: {teamError}</p>
             </div>
+          ) : team.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-[#5E6E7E]">No team members available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
+              {team.map((member, index) => (
+                <motion.div
+                  key={member._id}
+                  initial={{ opacity: 0, y: 60 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -12 }}
+                  className="bg-white/80 backdrop-blur-lg p-12 rounded-3xl shadow-2xl border relative transition-all"
+                  style={{ borderColor: "var(--border-light)" }}
+                >
 
-            <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
-            <p style={{ color: "var(--accent)" }} className="mb-6">
-              {member.role}
-            </p>
+                  {/* Experience Badge */}
+                  <div className="absolute top-6 right-6 text-xs px-4 py-2 rounded-full"
+                    style={{ background: "var(--accent)", color: "white" }}>
+                    {calculateExperience(member.startYear)}+ Years Experience
+                  </div>
 
-          </motion.div>
-        ))}
-      </div>
-    )}
+                  <div className="relative w-44 h-44 mx-auto mb-8 rounded-full overflow-hidden border-4"
+                    style={{ borderColor: "var(--accent)" }}>
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
 
-  </div>
-</section>
+                  <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
+                  <p style={{ color: "var(--accent)" }} className="mb-6">
+                    {member.role}
+                  </p>
+
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+        </div>
+      </section>
 
 
       {/* ================= CLINIC GALLERY ================= */}
