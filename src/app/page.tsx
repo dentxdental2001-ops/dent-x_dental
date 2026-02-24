@@ -10,6 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import BeforeAfterSlider from "../components/BeforeAfterSlider";
 
 
 function Counter({ target }: { target: number }) {
@@ -36,76 +37,37 @@ function Counter({ target }: { target: number }) {
   return <span>{count.toLocaleString()}+</span>;
 }
 
-function BeforeAfterSlider({
-  before,
-  after,
-  title,
-  description,
-}: {
-  before: string;
-  after: string;
-  title: string;
-  description: string;
-}) {
-  const [position, setPosition] = useState(50);
-
-  return (
-    <div
-      className="relative w-full h-80 overflow-hidden rounded-3xl border"
-      style={{
-        borderColor: "var(--border-light)",
-        boxShadow: "0 15px 40px rgba(0,0,0,0.08)",
-      }}
-    >
-      {/* Before Image */}
-      <img
-        src={before}
-        alt="Before"
-        className="absolute w-full h-full object-cover"
-      />
-
-      {/* After Image */}
-      <div
-        className="absolute top-0 left-0 h-full overflow-hidden"
-        style={{ width: `${position}%` }}
-      >
-        <img
-          src={after}
-          alt="After"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Slider Line */}
-      <div
-        className="absolute top-0 h-full w-1 bg-white"
-        style={{ left: `${position}%`, transform: "translateX(-50%)" }}
-      />
-
-      {/* Range Input */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={position}
-        onChange={(e) => setPosition(Number(e.target.value))}
-        className="absolute w-full h-full opacity-0 cursor-ew-resize"
-      />
-
-      {/* Labels */}
-      <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs font-medium">
-        After
-      </div>
-
-      <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs font-medium">
-        Before
-      </div>
-    </div>
-  );
+interface BeforeAfter {
+  _id: string;
+  beforeImage: string;
+  afterImage: string;
+  treatment: string;
+  createdAt: string;
 }
 
 export default function HomePage() {
   const [activeFAQ, setActiveFAQ] = useState<number | null>(0);
+  const [beforeAfters, setBeforeAfters] = useState<BeforeAfter[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLatestBeforeAfters();
+  }, []);
+
+  const fetchLatestBeforeAfters = async () => {
+    try {
+      const response = await fetch('/api/before-after?limit=2');
+      const data = await response.json();
+      
+      if (data.success) {
+        setBeforeAfters(data.data.beforeAfters);
+      }
+    } catch (error) {
+      console.error('Failed to fetch before/after data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const faqs = [
     {
@@ -131,8 +93,28 @@ export default function HomePage() {
       {/* ================= HERO ================= */}
       <section className="relative py-32 bg-gradient-to-b from-[var(--background)] to-[var(--white)] overflow-hidden">
         <div className="absolute inset-0 bg-[var(--accent)]/10 blur-3xl opacity-30"></div>
+        
+        {/* Mobile Hero Image - Top Fade */}
+        <div 
+          className="md:hidden absolute top-0 left-0 right-0 h-[43%] bg-cover bg-center opacity-40"
+          style={{
+            backgroundImage: `url('/image.png')`,
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.05) 85%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.05) 85%, transparent 100%)'
+          }}
+        ></div>
+        
+        {/* Desktop Hero Image - Left Fade */}
+        <div 
+          className="hidden md:block absolute left-0 top-0 h-full w-1/2 bg-cover bg-center opacity-30"
+          style={{
+            backgroundImage: `url('/image.png')`, 
+            maskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, transparent 100%)'
+          }}
+        ></div>
 
-        <div className="container-max text-center relative z-10">
+        <div className="container-max text-center relative z-10 text-shadow-sm">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,12 +122,12 @@ export default function HomePage() {
             className="text-5xl md:text-6xl font-semibold leading-tight"
           >
             Precision Dentistry <br />
-            <span className="text-[var(--accent)]">
+            <span className="text-[var(--accent)] ">
               Crafted for Confident Smiles
             </span>
           </motion.h1>
 
-          <p className="mt-8 max-w-3xl mx-auto text-lg text-[var(--text)] leading-relaxed">
+          <p className="mt-8 max-w-3xl mx-auto text-lg text-[var(--text)] leading-relaxed text-shadow-sm">
             Combining advanced technology, microscopic precision, and
             compassionate care to deliver world-class dental treatments
             with personalized attention and comfort.
@@ -181,7 +163,7 @@ export default function HomePage() {
             </h2>
 
             <p className="text-[var(--text)] leading-relaxed mb-6">
-              With over two decades of excellence and 1000+ satisfied patients,
+              With over two decades of excellence and 5000+ satisfied patients,
               Dent-X Dental has built a strong reputation for ethical,
               technology-driven and patient-focused dentistry.
             </p>
@@ -206,11 +188,12 @@ export default function HomePage() {
               Why Patients Choose Us
             </h3>
 
-            <ul className="space-y-4 text-sm text-[var(--text)]">
+            <ul className="space-y-4 text-base text-[var(--text)]">
               <li>✔ Advanced Dental Technology</li>
               <li>✔ Experienced Specialist Team</li>
               <li>✔ Strict Sterilization Protocol</li>
               <li>✔ Patient-Centered Approach</li>
+              <li>✔ Ground Floor Access for Senior Comfort</li>
               <li>✔ Comfortable & Modern Clinic</li>
             </ul>
           </motion.div>
@@ -271,6 +254,15 @@ export default function HomePage() {
 
           </div>
 
+          <div className="text-center mt-16">
+            <Link
+              href="/services"
+              className="btn-primary"
+            >
+              View All Services
+            </Link>
+          </div>
+
         </div>
       </section>
 
@@ -303,7 +295,7 @@ export default function HomePage() {
               className="text-5xl font-semibold"
               style={{ color: "var(--accent)" }}
             >
-              <Counter target={1000} />
+              <Counter target={5000} />
             </h3>
             <p className="mt-4 opacity-80">Happy Patients</p>
           </motion.div>
@@ -318,7 +310,7 @@ export default function HomePage() {
               className="text-5xl font-semibold"
               style={{ color: "var(--accent)" }}
             >
-              20+
+              {new Date().getFullYear() - 2001}+
             </h3>
             <p className="mt-4 opacity-80">Years of Experience</p>
           </motion.div>
@@ -339,39 +331,38 @@ export default function HomePage() {
       Experience the difference precision dentistry makes.
     </p>
 
-    <div className="grid md:grid-cols-2 gap-16">
-
-      <div>
-        <BeforeAfterSlider
-          before="/before1.png"
-          after="/after1.png"
-          title="Smile Makeover"
-          description="Veneers & Whitening"
-        />
-        <div className="mt-6 text-center">
-          <h4 className="font-semibold">Smile Makeover</h4>
-          <p className="text-sm text-[var(--text)] mt-2">
-            Veneers & whitening transformation.
-          </p>
-        </div>
+    {loading ? (
+      <div className="text-center py-16">
+        <div className="inline-block w-8 h-8 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-4 text-[var(--text)]">Loading transformations...</p>
       </div>
-
-      <div>
-        <BeforeAfterSlider
-          before="/before2.png"
-          after="/after2.png"
-          title="Dental Implants"
-          description="Full Restoration"
-        />
-        <div className="mt-6 text-center">
-          <h4 className="font-semibold">Dental Implants</h4>
-          <p className="text-sm text-[var(--text)] mt-2">
-            Complete tooth replacement restoration.
-          </p>
+    ) : beforeAfters.length > 0 ? (
+      <>
+        <div className="grid md:grid-cols-2 gap-16">
+          {beforeAfters.map((item) => (
+            <BeforeAfterSlider
+              key={item._id}
+              before={item.beforeImage}
+              after={item.afterImage}
+              treatment={item.treatment}
+            />
+          ))}
         </div>
+        
+        <div className="text-center mt-16">
+          <Link
+            href="/gallery"
+            className="btn-primary"
+          >
+            View All Transformations
+          </Link>
+        </div>
+      </>
+    ) : (
+      <div className="text-center py-16">
+        <p className="text-[var(--text)]">No transformations available yet.</p>
       </div>
-
-    </div>
+    )}
 
   </div>
 </section>
