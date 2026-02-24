@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -26,13 +27,16 @@ export default function Header() {
         <div className="flex justify-between items-center h-20">
           
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl font-bold tracking-wide"
-            style={{ color: "var(--heading)" }}
-          >
-            Dent<span style={{ color: "var(--accent)" }}>-X</span>
-          </Link>
+          <Link href="/" className="flex items-center">
+  <Image
+    src="/logo.png"
+    alt="Dent-X Dental Clinic Logo"
+    width={160}
+    height={60}
+    className="object-contain transition duration-300 hover:scale-105"
+    priority
+  />
+</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-10 font-medium">

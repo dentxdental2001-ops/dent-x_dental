@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Phone, MapPin, Mail } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
+ import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -16,54 +17,64 @@ export default function Footer() {
 
           {/* Logo + Description */}
           <div>
-            <h2
-              className="text-xl font-semibold mb-4"
-              style={{ color: "var(--footer-heading)" }}
-            >
-              Dent<span style={{ color: "var(--accent)" }}>-X</span>
-            </h2>
+  {/* Logo */}
+  <div className="mb-5">
+    <Image
+      src="/logo.png"
+      alt="Dent-X Dental Clinic Logo"
+      width={200}
+      height={80}
+      className="object-contain"
+      priority
+    />
+  </div>
 
-            <p className="leading-relaxed text-sm mb-6">
-              Your trusted partner in dental health with 17+ years of excellence
-              serving 65,000+ happy patients across 7 branches.
-            </p>
+  <p className="leading-relaxed text-sm mb-6">
+    Your trusted partner in dental health with 25+ years of excellence
+    serving 5,000+ happy patients.
+  </p>
 
-            {/* Social Icons */}
-            <div className="flex gap-4">
-              <a
-                href="https://wa.me/918881288859"
-                target="_blank"
-                className="p-2 rounded-full transition hover:scale-110"
-                style={{ background: "var(--accent)", color: "white" }}
-              >
-                <FaWhatsapp size={18} />
-              </a>
+  {/* Social Icons */}
+  <div className="flex gap-4">
+    <a
+      href="https://wa.me/918881288859"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 rounded-full transition hover:scale-110"
+      style={{ background: "var(--accent)", color: "white" }}
+    >
+      <FaWhatsapp size={18} />
+    </a>
 
-              <a
-                href="https://www.instagram.com/dentx_dentalclinic?igsh=MTRyZ2piOGlubzczNA=="
-                className="p-2 rounded-full transition hover:scale-110"
-                style={{ background: "var(--accent)", color: "white" }}
-              >
-                <FaInstagram size={18} />
-              </a>
+    <a
+      href="https://www.instagram.com/dentx_dentalclinic?igsh=MTRyZ2piOGlubzczNA=="
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 rounded-full transition hover:scale-110"
+      style={{ background: "var(--accent)", color: "white" }}
+    >
+      <FaInstagram size={18} />
+    </a>
 
-              <a
-                href="https://www.facebook.com/p/Dent-X-dental-speciality-clinic-100063743275106/"
-                className="p-2 rounded-full transition hover:scale-110"
-                style={{ background: "var(--accent)", color: "white" }}
-              >
-                <FaFacebookF size={18} />
-              </a>
+    <a
+      href="https://www.facebook.com/p/Dent-X-dental-speciality-clinic-100063743275106/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 rounded-full transition hover:scale-110"
+      style={{ background: "var(--accent)", color: "white" }}
+    >
+      <FaFacebookF size={18} />
+    </a>
 
-              <a
-                href="mailto:dentxdental2001@gmail.com"
-                className="p-2 rounded-full transition hover:scale-110"
-                style={{ background: "var(--accent)", color: "white" }}
-              >
-                <SiGmail size={18} />
-              </a>
-            </div>
-          </div>
+    <a
+      href="mailto:dentxdental2001@gmail.com"
+      className="p-2 rounded-full transition hover:scale-110"
+      style={{ background: "var(--accent)", color: "white" }}
+    >
+      <SiGmail size={18} />
+    </a>
+  </div>
+</div>
 
           {/* Quick Links */}
           <div>
@@ -115,31 +126,50 @@ export default function Footer() {
             </h3>
 
             <div className="space-y-4 text-sm">
-              <div className="flex items-center gap-3">
-                <Phone size={16} style={{ color: "var(--accent)" }} />
-                <a href="tel:+918881288859">+91 8881288859</a>
-              </div>
 
-              <div className="flex items-center gap-3">
-                <Mail size={16} style={{ color: "var(--accent)" }} />
-                <a href="mailto:dentxdental2001@gmail.com">
-                  dentxdental2001@gmail.com
-                </a>
-              </div>
+  {/* Phone Numbers */}
+  <div className="flex items-start gap-3">
+    <Phone size={18} className="mt-1 shrink-0" style={{ color: "var(--accent)" }} />
+    <div className="space-y-1">
+      <a href="tel:+918881288859" className="block hover:opacity-80 transition">
+        +91 8881288859
+      </a>
+      <a href="tel:+919825179348" className="block hover:opacity-80 transition">
+        +91 98251 79348
+      </a>
+      <a href="tel:+917405041329" className="block hover:opacity-80 transition">
+        +91 7405041329
+      </a>
+    </div>
+  </div>
 
-              <div className="flex items-start gap-3">
-                <MapPin size={42} style={{ color: "var(--accent)" }} />
-                <a
-                  href="https://www.google.com/maps?q=Dent-X+Dental+Rajkot"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-all duration-300 underline-offset-4 hover:underline hover:opacity-90 group-hover:translate-x-1"
+  {/* Email */}
+  <div className="flex items-center gap-3">
+    <Mail size={18} className="shrink-0" style={{ color: "var(--accent)" }} />
+    <a
+      href="mailto:dentxdental2001@gmail.com"
+      className="hover:opacity-80 transition"
+    >
+      dentxdental2001@gmail.com
+    </a>
+  </div>
 
-                >
-                  M205, Amin Marg, near vikas pharmacy Railway Crossings, Gujarat Housing Board, Kotecha Nagar, Rajkot, Gujarat 360001
-                </a>
-              </div>
-            </div>
+  {/* Address */}
+  <div className="flex items-start gap-3">
+    <MapPin size={18} className="mt-1 shrink-0" style={{ color: "var(--accent)" }} />
+    <a
+      href="https://www.google.com/maps?q=Dent-X+Dental+Rajkot"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="transition-all duration-300 underline-offset-4 hover:underline hover:opacity-90 hover:translate-x-1"
+    >
+      M205, Amin Marg, near Vikas Pharmacy Railway Crossings,
+      Gujarat Housing Board, Kotecha Nagar,
+      Rajkot, Gujarat 360001
+    </a>
+  </div>
+
+</div>
           </div>
         </div>
 
