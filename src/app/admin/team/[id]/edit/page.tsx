@@ -44,16 +44,16 @@ export default function EditTeamMemberPage() {
       try {
         const response = await getTeamMember(id);
         const member = response.data;
-        
-        setFormData({
-          name: member.name || '',
-          role: member.role || '',
-          startYear: member.startYear || new Date().getFullYear()
-        });
-        
-        setImage(member.image || '');
-        setImagePreview(member.image || '');
-        setOriginalImage(member.image || '');
+        if (member) {
+          setFormData({
+            name: member.name || '',
+            role: member.role || '',
+            startYear: member.startYear || new Date().getFullYear()
+          });
+          setImage(member.image || '');
+          setImagePreview(member.image || '');
+          setOriginalImage(member.image || '');
+        }
       } catch (error) {
         console.error('Error fetching team member:', error);
         setError('Failed to load team member data');
