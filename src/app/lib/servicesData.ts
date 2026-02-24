@@ -1,5 +1,6 @@
 export const servicesData = [
   {
+    slug: "single-visit-root-canal",
     title: "Single Visit Root Canal",
     short: "Advanced microscopic root canal treatment in a single appointment.",
     detail: {
@@ -9,9 +10,8 @@ export const servicesData = [
         "At Dent X, we use a high-precision dental microscope to ensure complete cleaning and shaping of canals in a single visit. This reduces discomfort, improves accuracy, and increases long-term success rates.",
     },
   },
-
   {
-
+    slug: "dental-implants",
     title: "Dental Implants",
     short: "Permanent and natural-looking solution for missing teeth.",
     detail: {
@@ -21,9 +21,8 @@ export const servicesData = [
         "We use advanced implant planning techniques to ensure proper placement, stability, and long-term durability. Implants restore natural function and confidence.",
     },
   },
-
   {
-
+    slug: "crowns-bridges",
     title: "Crowns & Bridges",
     short: "Restore strength and aesthetics with custom restorations.",
     detail: {
@@ -33,9 +32,8 @@ export const servicesData = [
         "We offer Zirconia, Ceramic, and Metal options customized for durability, fit, and natural appearance.",
     },
   },
-
   {
-
+    slug: "wisdom-tooth-removal",
     title: "Wisdom Tooth Removal",
     short: "Safe and comfortable surgical extraction procedures.",
     detail: {
@@ -45,22 +43,19 @@ export const servicesData = [
         "Our modern extraction techniques ensure minimal discomfort and faster healing.",
     },
   },
-
   {
-
+    slug: "braces-aligners",
     title: "Braces & Aligners",
     short: "Straighten teeth for better function and aesthetics.",
     detail: {
       what:
         "Orthodontic treatments correct misaligned teeth and bite issues.",
-
       treatment:
         "We provide traditional braces and clear aligners tailored to each patient’s needs.",
     },
   },
-
   {
-
+    slug: "cosmetic-teeth-whitening",
     title: "Cosmetic Teeth Whitening",
     short: "Professional whitening for a brighter smile.",
     detail: {
@@ -70,9 +65,8 @@ export const servicesData = [
         "Our safe whitening treatments brighten teeth while protecting enamel.",
     },
   },
-
   {
-
+    slug: "full-mouth-rehabilitation",
     title: "Full Mouth Rehabilitation",
     short: "Comprehensive restoration of oral health and aesthetics.",
     detail: {
@@ -82,9 +76,8 @@ export const servicesData = [
         "Customized treatment plans restore function, health, and smile harmony.",
     },
   },
-
   {
-
+    slug: "flexible-dentures",
     title: "Flexible Dentures",
     short: "Lightweight and comfortable removable tooth replacement.",
     detail: {
@@ -94,9 +87,8 @@ export const servicesData = [
         "Designed for better comfort, aesthetics, and adaptability.",
     },
   },
-
   {
-
+    slug: "dental-veneers",
     title: "Dental Veneers",
     short: "Enhance smile aesthetics with thin porcelain shells.",
     detail: {
@@ -106,9 +98,8 @@ export const servicesData = [
         "Custom-crafted veneers provide a natural, long-lasting smile transformation.",
     },
   },
-
   {
-
+    slug: "cosmetic-fillings",
     title: "Cosmetic Teeth Fillings",
     short: "Tooth-colored fillings for natural restoration.",
     detail: {
@@ -118,15 +109,13 @@ export const servicesData = [
         "We use aesthetic, durable materials that blend seamlessly with natural teeth.",
     },
   },
-
   {
-
+    slug: "pediatric-dentistry",
     title: "Pediatric Dentistry",
     short: "Gentle dental care for children.",
     detail: {
       what:
         "Specialized dental care focused on children’s oral health.",
-
       treatment:
         "Child-friendly environment with preventive and corrective treatments.",
     },

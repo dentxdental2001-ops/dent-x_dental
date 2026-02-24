@@ -9,13 +9,17 @@ export interface ApiResponse<T = any> {
 export interface PaginationResponse<T> {
   success: boolean;
   data: {
-    [key: string]: T[];
+    testimonials?: T[];
+    beforeAfters?: T[];
+    team?: T[];
+    gallery?: T[];
     pagination: {
       page: number;
       limit: number;
       total: number;
       pages: number;
     };
+    [key: string]: any;
   };
 }
 

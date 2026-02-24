@@ -88,8 +88,10 @@ export function useTestimonials() {
         `/testimonials?${queryParams.toString()}`
       );
       
-      setTestimonials(response.data.testimonials);
-      setPagination(response.data.pagination);
+      if (response.data && Array.isArray((response.data as any).testimonials)) {
+        setTestimonials((response.data as any).testimonials);
+        setPagination((response.data as any).pagination);
+      }
       return response;
     } catch (err) {
       console.error('Error fetching testimonials:', err);
@@ -171,8 +173,10 @@ export function useBeforeAfter() {
         `/before-after?${queryParams.toString()}`
       );
       
-      setBeforeAfters(response.data.beforeAfters);
-      setPagination(response.data.pagination);
+      if (response.data && Array.isArray((response.data as any).beforeAfters)) {
+        setBeforeAfters((response.data as any).beforeAfters);
+        setPagination((response.data as any).pagination);
+      }
       return response;
     } catch (err) {
       console.error('Error fetching before/after records:', err);
@@ -252,8 +256,10 @@ export function useTeam() {
         `/team?${queryParams.toString()}`
       );
       
-      setTeam(response.data.team);
-      setPagination(response.data.pagination);
+      if (response.data && Array.isArray((response.data as any).team)) {
+        setTeam((response.data as any).team);
+        setPagination((response.data as any).pagination);
+      }
       return response;
     } catch (err) {
       console.error('Error fetching team members:', err);
@@ -348,9 +354,9 @@ export function useGallery() {
         pagination: typeof pagination;
       }>(endpoint);
 
-      if (response.data) {
-        setGallery(response.data.gallery);
-        setPagination(response.data.pagination);
+      if (response.data && Array.isArray((response.data as any).gallery)) {
+        setGallery((response.data as any).gallery);
+        setPagination((response.data as any).pagination);
       }
 
       return response;
@@ -365,7 +371,7 @@ export function useGallery() {
       const response = await apiRequest<GalleryResponse>('/gallery', 'POST', data);
 
       if (response.data) {
-        setGallery(prev => [...prev, response.data]);
+        setGallery(prev => [...prev, response.data as GalleryResponse]);
       }
 
       return response;
@@ -380,8 +386,8 @@ export function useGallery() {
       const response = await apiRequest<GalleryResponse>(`/gallery/${id}`, 'PUT', data);
 
       if (response.data) {
-        setGallery(prev => 
-          prev.map(item => item._id === id ? response.data : item)
+        setGallery(prev =>
+          prev.map(item => item._id === id ? (response.data as GalleryResponse) : item)
         );
       }
 
@@ -460,6 +466,9 @@ export function useImageUpload() {
         publicId
       });
 
+      if (!response.data) {
+        throw new Error('Image upload failed: No data returned');
+      }
       return response.data;
     } catch (err) {
       console.error('Error uploading image:', err);
