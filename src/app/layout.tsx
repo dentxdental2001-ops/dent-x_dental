@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dentxdental.com"),
+  metadataBase: new URL("https://dentxdental.co.in"),
 
   title: {
     default: "Dent-X Dental Clinic | Best Dentist in Rajkot",
@@ -78,8 +78,6 @@ export default function RootLayout({
         <LayoutWrapper>
           {children}
         </LayoutWrapper>
-
-        <WhatsAppButton />
       </body>
     </html>
   );
