@@ -6,11 +6,12 @@ import Gallery from '@/models/Gallery';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB();
-    const galleryItem = await Gallery.findById(params.id);
+    const galleryItem = await Gallery.findById(id);
     if (!galleryItem) {
       return NextResponse.json(
         { success: false, error: 'Gallery item not found' },
@@ -32,14 +33,15 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB();
     const body = await request.json();
     const { image, priority } = body;
     // Find the existing gallery item
-    const existingItem = await Gallery.findById(params.id);
+    const existingItem = await Gallery.findById(id);
     if (!existingItem) {
       return NextResponse.json(
         { success: false, error: 'Gallery item not found' },
@@ -71,7 +73,7 @@ export async function PUT(
       // Check if the new priority already exists (and it's not the current item)
       const otherItemWithPriority = await Gallery.findOne({
         priority,
-        _id: { $ne: params.id }
+        _id: { $ne: id }
       });
       if (otherItemWithPriority) {
         // If increasing priority, shift items up
@@ -79,7 +81,7 @@ export async function PUT(
           await Gallery.updateMany(
             {
               priority: { $gt: existingItem.priority, $lte: priority },
-              _id: { $ne: params.id }
+              _id: { $ne: id }
             },
             { $inc: { priority: -1 } }
           );
@@ -89,7 +91,7 @@ export async function PUT(
           await Gallery.updateMany(
             {
               priority: { $gte: priority, $lt: existingItem.priority },
-              _id: { $ne: params.id }
+              _id: { $ne: id }
             },
             { $inc: { priority: 1 } }
           );
@@ -101,7 +103,7 @@ export async function PUT(
     if (image !== undefined) updateFields.image = image;
     if (priority !== undefined) updateFields.priority = priority;
     const updatedItem = await Gallery.findByIdAndUpdate(
-      params.id,
+      id,
       updateFields,
       { new: true, runValidators: true }
     );
@@ -134,11 +136,12 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectDB();
-    const deletedItem = await Gallery.findByIdAndDelete(params.id);
+    const deletedItem = await Gallery.findByIdAndDelete(id);
     if (!deletedItem) {
       return NextResponse.json(
         { success: false, error: 'Gallery item not found' },
