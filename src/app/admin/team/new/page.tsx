@@ -12,6 +12,8 @@ interface FormData {
   name: string;
   role: string;
   startYear: number;
+  qualifications: string[];
+  specialties: string[];
 }
 
 export default function NewTeamMemberPage() {
@@ -20,11 +22,17 @@ export default function NewTeamMemberPage() {
   const { uploadImage, loading: imageUploading } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     role: '',
-    startYear: new Date().getFullYear()
+    startYear: new Date().getFullYear(),
+    qualifications: [],
+    specialties: [],
   });
+
+  const [newQualification, setNewQualification] = useState('');
+  const [newSpecialty, setNewSpecialty] = useState('');
 
   const [image, setImage] = useState<string>('');
   const [imagePreview, setImagePreview] = useState<string>('');

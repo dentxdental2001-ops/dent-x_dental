@@ -138,38 +138,43 @@ export default function TestimonialsPage() {
           </div>
         ) : (
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {(testimonials.length > 0 ? testimonials : fallbackTestimonials).map((item, index) => (
-              <motion.div
-                key={item._id || index}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: index * 0.1 + 0.2,
-                  ease: "easeOut"
-                }}
-                whileHover={{ y: -8 }}
-                className="p-8 rounded-3xl transition-all duration-300"
-                style={{
-                  background: "var(--testimonial-card-bg)",
-                  boxShadow: "var(--testimonial-shadow)",
-                }}
-              >
-                <Quote className="text-[var(--testimonial-accent)] mb-4" />
+            {(testimonials.length > 0 ? testimonials : fallbackTestimonials).map((item, index) => {
+              const key = 'name' in item && 'role' in item && 'description' in item && '_id' in item
+                ? item._id
+                : `${item.name}-${index}`;
+              return (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.6, 
+                    delay: index * 0.1 + 0.2,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{ y: -8 }}
+                  className="p-8 rounded-3xl transition-all duration-300"
+                  style={{
+                    background: "var(--testimonial-card-bg)",
+                    boxShadow: "var(--testimonial-shadow)",
+                  }}
+                >
+                  <Quote className="text-[var(--testimonial-accent)] mb-4" />
 
-                <p className="text-[var(--testimonial-text)] mb-6 leading-relaxed">
-                  {item.description || item.message}
-                </p>
+                  <p className="text-[var(--testimonial-text)] mb-6 leading-relaxed">
+                    {'description' in item ? item.description : item.message}
+                  </p>
 
-                <h4 className="font-semibold text-[var(--testimonial-heading)]">
-                  {item.name}
-                </h4>
+                  <h4 className="font-semibold text-[var(--testimonial-heading)]">
+                    {item.name}
+                  </h4>
 
-                <span className="text-sm text-[var(--testimonial-accent)]">
-                  {item.role || item.type}
-                </span>
-              </motion.div>
-            ))}
+                  <span className="text-sm text-[var(--testimonial-accent)]">
+                    {'role' in item ? item.role : item.type}
+                  </span>
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </section>
