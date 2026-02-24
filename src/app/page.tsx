@@ -11,6 +11,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import BeforeAfterSlider from "../components/BeforeAfterSlider";
+import { Metadata } from "next";
+import { generateFAQSchema } from "@/lib/seo";
+
+// Note: Since this is a client component, metadata should be handled in layout.tsx
+// The home page uses the default metadata from layout.tsx which is optimized for the homepage
 
 
 function Counter({ target }: { target: number }) {
@@ -86,6 +91,9 @@ export default function HomePage() {
         "Yes. Our pediatric dentistry focuses on preventive care and creating a stress-free dental experience for children.",
     },
   ];
+
+  // FAQ Schema for SEO
+  const faqSchema = generateFAQSchema(faqs);
 
   return (
     <div className="bg-[var(--background)]">
@@ -523,6 +531,14 @@ export default function HomePage() {
 
         </div>
       </section>
+
+      {/* FAQ Schema JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema)
+        }}
+      />
 
     </div>
   );

@@ -1,5 +1,8 @@
 "use client";
 
+// Note: Metadata for this page is handled in a separate metadata.ts file
+// since this is a client component
+
 import { useState, useEffect } from 'react';
 import { ChevronRight, Star, Loader2, ImageIcon } from 'lucide-react';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
