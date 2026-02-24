@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Team from '@/models/Team';
+import Certificate from '@/models/Certificate';
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,18 +11,18 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10');
     const skip = (page - 1) * limit;
     
-    const team = await Team
+    const certificates = await Certificate
       .find({})
-      .sort({ priority: 1, startYear: 1, createdAt: -1 }) // Sort by priority first, then by start year, then by creation date
+      .sort({ priority: 1, createdAt: -1 }) // Sort by priority first, then by creation date
       .skip(skip)
       .limit(limit);
     
-    const total = await Team.countDocuments({});
+    const total = await Certificate.countDocuments({});
     
     return NextResponse.json({
       success: true,
       data: {
-        team,
+        certificates,
         pagination: {
           page,
           limit,
@@ -33,9 +33,9 @@ export async function GET(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('GET /api/team error:', error);
+    console.error('GET /api/certificates error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch team members' },
+      { success: false, error: 'Failed to fetch certificates' },
       { status: 500 }
     );
   }
@@ -47,26 +47,14 @@ export async function POST(request: NextRequest) {
     
     const body = await request.json();
     const { 
-      name, 
-      role, 
-      startYear, 
       image,
       priority
     } = body;
     
     // Validate required fields
-    if (!name || !role || !startYear || !image) {
+    if (!image) {
       return NextResponse.json(
-        { success: false, error: 'Name, role, start year, and image are required' },
-        { status: 400 }
-      );
-    }
-
-    // Validate start year
-    const currentYear = new Date().getFullYear();
-    if (startYear < 1980 || startYear > currentYear) {
-      return NextResponse.json(
-        { success: false, error: 'Start year must be between 1980 and current year' },
+        { success: false, error: 'Image is required' },
         { status: 400 }
       );
     }
@@ -74,41 +62,30 @@ export async function POST(request: NextRequest) {
     // Auto-assign priority if not provided
     let assignedPriority = priority;
     if (!assignedPriority) {
-      const maxPriority = await Team.findOne({}, { priority: 1 }).sort({ priority: -1 });
+      const maxPriority = await Certificate.findOne({}, { priority: 1 }).sort({ priority: -1 });
       assignedPriority = maxPriority ? maxPriority.priority + 1 : 1;
     } else {
       // If priority is provided, shift existing priorities if needed
-      await Team.updateMany(
+      await Certificate.updateMany(
         { priority: { $gte: assignedPriority } },
         { $inc: { priority: 1 } }
       );
     }
     
-    const teamMember = new Team({
-      name: name.trim(),
-      role: role.trim(),
-      startYear,
+    const certificate = new Certificate({
       image,
       priority: assignedPriority
     });
     
-    await teamMember.save();
+    await certificate.save();
     
     return NextResponse.json({
       success: true,
-      data: teamMember
+      data: certificate
     }, { status: 201 });
     
   } catch (error) {
-    console.error('POST /api/team error:', error);
-    
-    // Handle duplicate key error
-    if (error instanceof Error && error.message.includes('duplicate key')) {
-      return NextResponse.json(
-        { success: false, error: 'A team member with this name already exists' },
-        { status: 409 }
-      );
-    }
+    console.error('POST /api/certificates error:', error);
     
     // Handle validation errors
     if (error instanceof Error && error.name === 'ValidationError') {
@@ -119,7 +96,7 @@ export async function POST(request: NextRequest) {
     }
     
     return NextResponse.json(
-      { success: false, error: 'Failed to create team member' },
+      { success: false, error: 'Failed to create certificate' },
       { status: 500 }
     );
   }

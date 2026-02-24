@@ -12,7 +12,8 @@ import {
   Menu,
   X,
   Home,
-  Images
+  Images,
+  Award
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -24,10 +25,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   const checkAuth = async () => {
     try {
@@ -43,12 +40,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       return;
     }
     setLoading(false);
-  };
+  }; 
+  
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
 
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/auth', { method: 'DELETE' });
-      router.push('/admin');
+      router.push('/');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -69,6 +71,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       name: 'Gallery',
       href: '/admin/gallery',
       icon: Images,
+    },
+    {
+      name: 'Certificates',
+      href: '/admin/certificates',
+      icon: Award,
     },
     {
       name: 'Testimonials',

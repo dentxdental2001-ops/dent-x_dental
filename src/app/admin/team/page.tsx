@@ -5,10 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AdminLayout from '@/components/AdminLayout';
 import { useTeam } from '@/hooks/useApi';
-import { Plus, Edit, Trash2, User, Clock } from 'lucide-react';
+import { Plus, Edit, Trash2, User, Clock, MoveUp, MoveDown } from 'lucide-react';
+import type { TeamResponse } from '@/types/api';
 
 export default function TeamPage() {
-  const { team, pagination, loading, error, fetchTeam, deleteTeamMember } = useTeam();
+  const { team, pagination, loading, error, fetchTeam, deleteTeamMember, updateTeamMember } = useTeam();
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,6 +46,33 @@ export default function TeamPage() {
     return `${years} year${years !== 1 ? 's' : ''}`;
   };
 
+  const handlePriorityChange = async (member: TeamResponse, direction: 'up' | 'down') => {
+    const currentIndex = team.findIndex(t => t._id === member._id);
+    if (currentIndex === -1) return;
+
+    let newPriority: number;
+    if (direction === 'up' && currentIndex > 0) {
+      // Move up means lower priority number (closer to 1)
+      newPriority = member.priority - 1;
+    } else if (direction === 'down' && currentIndex < team.length - 1) {
+      // Move down means higher priority number 
+      newPriority = member.priority + 1;
+    } else {
+      return; // Can't move
+    }
+
+    try {
+      // Update just this item's priority - the backend will handle shifting others
+      await updateTeamMember(member._id, { priority: newPriority });
+      
+      // Refresh the list to show new ordering
+      await fetchTeam();
+    } catch (error) {
+      console.error('Error updating priority:', error);
+      alert('Failed to update priority. Please try again.');
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -53,7 +81,7 @@ export default function TeamPage() {
           <div>
             <h1 className="text-3xl font-bold text-[#0F2A3B]">Team Management</h1>
             <p className="text-[#5E6E7E] mt-2">
-              Manage your dental clinic team members
+              Manage your dental clinic team members with priority ordering
             </p>
           </div>
           <Link
@@ -124,7 +152,7 @@ export default function TeamPage() {
             </div>
           ) : (
             <div className="divide-y divide-[#E6EEF3]">
-              {team.map((member) => (
+              {team.map((member, index) => (
                 <div key={member._id} className="p-6">
                   <div className="flex flex-col lg:flex-row gap-6">
                     {/* Profile Image */}
@@ -136,6 +164,9 @@ export default function TeamPage() {
                           fill
                           className="object-cover"
                         />
+                        <div className="absolute -top-2 -right-2 bg-[#2FA4C5] text-white px-2 py-1 rounded-full text-xs font-medium">
+                          #{member.priority}
+                        </div>
                       </div>
                     </div>
 
@@ -147,6 +178,27 @@ export default function TeamPage() {
                           <p className="text-[#2FA4C5] font-medium">{member.role}</p>
                         </div>
                         <div className="flex items-center gap-2">
+                          {/* Priority Controls */}
+                          <div className="flex items-center gap-1 mr-2">
+                            <button
+                              onClick={() => handlePriorityChange(member, 'up')}
+                              disabled={index === 0}
+                              className="p-2 text-[#5E6E7E] hover:text-[#2FA4C5] hover:bg-[#F7FBFE] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Move up"
+                            >
+                              <MoveUp size={18} />
+                            </button>
+                            <button
+                              onClick={() => handlePriorityChange(member, 'down')}
+                              disabled={index === team.length - 1}
+                              className="p-2 text-[#5E6E7E] hover:text-[#2FA4C5] hover:bg-[#F7FBFE] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Move down"
+                            >
+                              <MoveDown size={18} />
+                            </button>
+                          </div>
+
+                          {/* Edit/Delete */}
                           <Link
                             href={`/admin/team/${member._id}/edit`}
                             className="p-2 text-[#5E6E7E] hover:text-[#2FA4C5] hover:bg-[#F7FBFE] rounded-lg transition-colors"

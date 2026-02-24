@@ -11,59 +11,59 @@ export const servicesData = [
     },
   },
   {
-    slug: "dental-implants",
-    title: "Dental Implants",
-    short: "Permanent and natural-looking solution for missing teeth.",
+    slug: "dental-implant",
+    title: "Dental Implant",
+    short: "Advanced titanium implants to restore missing teeth with strength and natural aesthetics.",
     detail: {
       what:
-        "Dental implants are titanium posts surgically placed into the jawbone to replace missing tooth roots. They support crowns, bridges, or dentures.",
+        "Dental implants are a reliable and long-lasting solution for replacing missing teeth, designed to restore both function and aesthetics with precision. Crafted from biocompatible titanium, implants provide a strong and durable foundation that mimics natural tooth roots.",
       treatment:
-        "We use advanced implant planning techniques to ensure proper placement, stability, and long-term durability. Implants restore natural function and confidence.",
-    },
+        "At Dent X Dental Clinic, we offer advanced dental implant solutions designed to restore your smile with precision, strength, and natural aesthetics. Implants are carefully placed into the jawbone to create a stable and long-lasting foundation for crowns, bridges, or full-mouth prosthesis."
+    }
   },
   {
-    slug: "crowns-bridges",
+    slug: "crowns-and-bridges",
     title: "Crowns & Bridges",
-    short: "Restore strength and aesthetics with custom restorations.",
+    short: "Custom-designed crowns and bridges to restore strength, function, and natural appearance.",
     detail: {
       what:
-        "Crowns cover damaged teeth while bridges replace missing teeth by anchoring to adjacent teeth.",
+        "Dental crowns are custom-designed caps that protect and reinforce weakened teeth, restoring their shape, size, and function while blending seamlessly with your natural smile. Dental bridges are fixed prosthetic solutions that replace one or more missing teeth by anchoring securely to adjacent teeth or implants, helping maintain proper bite alignment and facial structure. They can be made from Zirconia, Ceramic, or Metal.",
       treatment:
-        "We offer Zirconia, Ceramic, and Metal options customized for durability, fit, and natural appearance.",
-    },
+        "Crowns are designed with precision using advanced 3D digital scanning technology, eliminating the need for traditional impression trays. This modern approach ensures exceptional accuracy, enhanced comfort, and a faster treatment process. The digital scan captures detailed images of your teeth, allowing us to create perfectly fitting, aesthetically superior crowns that blend seamlessly with your natural smile."
+    }
   },
   {
     slug: "wisdom-tooth-removal",
     title: "Wisdom Tooth Removal",
-    short: "Safe and comfortable surgical extraction procedures.",
+    short: "Safe and comfortable surgical removal of impacted or painful wisdom teeth.",
     detail: {
       what:
-        "Wisdom teeth are third molars that often lack space to erupt properly.",
+        "Wisdom tooth removal is a dental procedure to extract the third molars — the last teeth at the back of your mouth that usually erupt between 17–25 years of age. Because modern jaws often don’t have enough space, these teeth frequently become impacted (stuck under the gum or bone) or erupt in the wrong direction, leading to pain and infection.",
       treatment:
-        "Our modern extraction techniques ensure minimal discomfort and faster healing.",
-    },
+        "Wisdom tooth removal is performed with precision, care, and patient comfort as our top priority.The procedure is carried out under local anesthesia to ensure a comfortable experience, and we provide thorough post-operative guidance for smooth healing. Our goal is to relieve discomfort, protect surrounding teeth, and maintain long-term oral health with safe and effective surgical care."
+    }
   },
   {
-    slug: "braces-aligners",
-    title: "Braces & Aligners",
-    short: "Straighten teeth for better function and aesthetics.",
+    slug: "correction-of-irregular-teeth",
+    title: "Correction of Irregular Teeth",
+    short: "Orthodontic solutions to align teeth and improve bite, function, and smile aesthetics.",
     detail: {
       what:
-        "Orthodontic treatments correct misaligned teeth and bite issues.",
+        "Irregular teeth alignment, also known as malocclusion, refers to teeth that are not positioned properly in the dental arch. This can include crowding, spacing (gaps), protruding teeth, overlapping teeth, or bite issues like overbite, underbite, or crossbite.",
       treatment:
-        "We provide traditional braces and clear aligners tailored to each patient’s needs.",
-    },
+        "Irregular teeth alignment is corrected through orthodontic treatment, which gradually moves teeth into their ideal position to improve both function and aesthetics.By Two We can treat It that is by Clear Aligners And Braces."
+    }
   },
   {
     slug: "cosmetic-teeth-whitening",
     title: "Cosmetic Teeth Whitening",
-    short: "Professional whitening for a brighter smile.",
+    short: "Professional whitening treatment to brighten and enhance your natural smile.",
     detail: {
       what:
-        "Teeth whitening removes stains and discoloration caused by food, beverages, or aging.",
+        "Cosmetic teeth whitening is a professional dental procedure designed to lighten the natural shade of your teeth and enhance the brightness of your smile. Over time, teeth can become stained or discolored due to coffee, tea, smoking, certain foods, aging, or medication. Whitening treatments use safe, clinically approved bleaching agents to break down stains and restore a whiter, more radiant appearance.",
       treatment:
-        "Our safe whitening treatments brighten teeth while protecting enamel.",
-    },
+        "A whitening gel is carefully applied to the teeth, sometimes activated with a special light to enhance results. The procedure is controlled and monitored by a dental professional to ensure safety, comfort, and even shade improvement."
+    }
   },
   {
     slug: "full-mouth-rehabilitation",
