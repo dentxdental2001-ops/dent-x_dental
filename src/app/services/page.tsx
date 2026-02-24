@@ -120,7 +120,7 @@ export default function ServicesPage() {
                       transition={{ duration: 0.5 }}
                       className="overflow-visible"
                     >
-                      <div className="grid md:grid-cols-3 gap-8 mt-10">
+                      <div className="grid md:grid-cols-2 gap-8 mt-10">
 
                         <div>
                           <h4 className="font-semibold mb-3 text-[var(--accent)]">
@@ -128,15 +128,6 @@ export default function ServicesPage() {
                           </h4>
                           <p className="text-sm leading-relaxed text-[var(--text)]">
                             {service.detail.what}
-                          </p>
-                        </div>
-
-                        <div>
-                          <h4 className="font-semibold mb-3 text-[var(--accent)]">
-                            Why Does It Happen?
-                          </h4>
-                          <p className="text-sm leading-relaxed text-[var(--text)]">
-                            {service.detail.why}
                           </p>
                         </div>
 

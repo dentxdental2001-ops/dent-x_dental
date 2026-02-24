@@ -83,6 +83,50 @@ export interface CloudinaryResponse {
   bytes: number;
 }
 
+// Team Types
+export interface CreateTeamRequest {
+  name: string;
+  role: string;
+  startYear: number;
+  image: string; // Base64 image string or URL
+}
+
+export interface UpdateTeamRequest {
+  name?: string;
+  role?: string;
+  startYear?: number;
+  image?: string; // Base64 image string or URL
+}
+
+export interface TeamResponse {
+  _id: string;
+  name: string;
+  role: string;
+  startYear: number;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Gallery Types
+export interface CreateGalleryRequest {
+  image: string; // Base64 image string or URL
+  priority: number;
+}
+
+export interface UpdateGalleryRequest {
+  image?: string; // Base64 image string or URL
+  priority?: number;
+}
+
+export interface GalleryResponse {
+  _id: string;
+  image: string;
+  priority: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Health Check Types
 export interface HealthCheckResponse {
   success: boolean;
@@ -110,4 +154,7 @@ export interface TestimonialsQuery extends PaginationQuery {
 
 export interface BeforeAfterQuery extends PaginationQuery {
   treatment?: string;
+}
+
+export interface GalleryQuery extends PaginationQuery {
 }

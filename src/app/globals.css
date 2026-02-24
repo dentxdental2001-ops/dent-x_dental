@@ -1,59 +1,67 @@
 @import "tailwindcss";
 
-/* ===================================================== */
-/* DENT-X — PREMIUM GREEN DENTAL THEME */
-/* ===================================================== */
+/* ============================= */
+/* Premium Dental Theme */
+/* ============================= */
 
 :root {
+  /* ================= FONTS ================= */
+  --font-heading: var(--font-dm-serif-text, "DM Serif Text"), serif;
+  --font-body: var(--font-geist-sans), sans-serif;
+  
   /* ================= BRAND ================= */
-  --primary: #1E4D3A;          /* Deep forest green */
-  --primary-dark: #163B2C;
-  --accent: #2E8B57;           /* Fresh emerald green */
-  --accent-hover: #256F47;
+  --primary: #1F3F55;
+  --primary-dark: #183243;
+  --accent: #2FA4C5;
+  --accent-hover: #2389A7;
 
   /* ================= BACKGROUND ================= */
-  --background: #F4FAF7;       /* Soft mint white */
+  --background: #F7FBFE;
   --white: #FFFFFF;
-  --border-light: #DDEBE4;
+  --border-light: #E6EEF3;
 
   /* ================= TEXT ================= */
-  --heading: #143D2E;
-  --text: #5F746A;
+  --heading: #0F2A3B;
+  --text: #5E6E7E;
+
+ 
 
   --services-section-bg: #FFFFFF;
 
-  /* ================= TESTIMONIAL ================= */
-  --testimonial-bg: #EEF6F2;
+  /* ================= TESTIMONIAL PAGE ================= */
+  --testimonial-bg: #F5FAFD;
   --testimonial-card-bg: #FFFFFF;
-  --testimonial-shadow: 0 12px 30px rgba(20, 61, 46, 0.08);
+  --testimonial-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
 
-  --testimonial-heading: #143D2E;
-  --testimonial-text: #5F746A;
-  --testimonial-accent: #2E8B57;
-  --testimonial-border: #DDEBE4;
+  --testimonial-heading: #0F2A3B;
+  --testimonial-text: #5E6E7E;
+
+  --testimonial-accent: #2FA4C5;
+  --testimonial-border: #E6EEF3;
+
   --testimonial-star: #F4B400;
 
-  /* ================= CONTACT ================= */
-  --contact-bg: #F2F8F5;
+  /* ================= CONTACT PAGE ================= */
+  --contact-bg: #F4FAFD;
   --contact-card-bg: #FFFFFF;
-  --contact-card-shadow: 0 12px 30px rgba(20, 61, 46, 0.08);
-  --contact-border: #DDEBE4;
+  --contact-card-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  --contact-border: var(--border-light);
 
-  --contact-heading: #143D2E;
-  --contact-text: #5F746A;
-  --contact-accent: #2E8B57;
-  --contact-btn-bg: #2E8B57;
-  --contact-btn-hover: #256F47;
+  --contact-heading: var(--heading);
+  --contact-text: var(--text);
+  --contact-accent: var(--accent);
+  --contact-btn-bg: var(--accent);
+  --contact-btn-hover: var(--accent-hover);
 
   /* ================= FOOTER ================= */
-  --footer-bg: #1E4D3A;
+  --footer-bg: var(--primary);
   --footer-heading: #FFFFFF;
-  --footer-text: #CFE4DA;
+  --footer-text: #D9E6ED; /* Improved contrast */
 }
 
-/* ===================================================== */
-/* BASE STYLES */
-/* ===================================================== */
+/* ============================= */
+/* Base Styles */
+/* ============================= */
 
 html {
   scroll-behavior: smooth;
@@ -62,17 +70,40 @@ html {
 body {
   background: var(--background);
   color: var(--text);
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Headings */
+/* Headings - Using experimental font */
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--heading);
+  font-family: var(--font-heading) !important;
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+/* Override Tailwind font utilities with higher specificity */
+.text-5xl, .text-6xl, .text-3xl, .text-xl, .text-lg, .text-base {
+  font-family: var(--font-heading) !important;
+}
+
+/* Force font on headings with any Tailwind classes */
+h1.text-5xl, h1.text-6xl, h1.font-semibold,
+h2.text-3xl, h2.font-semibold,
+h3.text-xl, h3.font-semibold,
+h4.font-semibold, h5.font-semibold, h6.font-semibold {
+  font-family: var(--font-dm-serif-text, "DM Serif Text"), serif !important;
+}
+
+/* Debugging - Force font on specific elements */
+.font-heading h1, 
+.font-heading h2, 
+.font-heading h3, 
+.font-heading h4, 
+.font-heading h5, 
+.font-heading h6 {
+  font-family: var(--font-dm-serif-text), "DM Serif Text", serif !important;
 }
 
 /* Section Spacing */
@@ -81,9 +112,9 @@ section {
   padding: 80px 0;
 }
 
-/* ===================================================== */
-/* BUTTONS */
-/* ===================================================== */
+/* ============================= */
+/* Buttons */
+/* ============================= */
 
 .btn-primary {
   background: var(--accent);
@@ -99,26 +130,25 @@ section {
   transform: translateY(-2px);
 }
 
-/* ===================================================== */
-/* FORM ELEMENTS */
-/* ===================================================== */
+/* ============================= */
+/* Form Elements */
+/* ============================= */
 
 input,
 textarea {
   outline: none;
   transition: 0.2s ease;
-  border: 1px solid var(--border-light);
 }
 
 input:focus,
 textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.15);
+  box-shadow: 0 0 0 3px rgba(47, 164, 197, 0.15);
 }
 
-/* ===================================================== */
-/* UTILITIES */
-/* ===================================================== */
+/* ============================= */
+/* Utility Enhancements */
+/* ============================= */
 
 .container-max {
   max-width: 1280px;
@@ -126,9 +156,34 @@ textarea:focus {
   padding: 0 24px;
 }
 
-/* ===================================================== */
-/* CONTACT BUTTON */
-/* ===================================================== */
+/* ============================= */
+/* Font Utilities - Easy experimentation */
+/* ============================= */
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Font utilities for DM Serif Text */
+.dm-serif-regular {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-style: normal;
+}
+
+.dm-serif-italic {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ============================= */
+/* Contact Page */
+/* ============================= */
 
 .contact-btn {
   background: var(--contact-btn-bg);

@@ -128,7 +128,7 @@ export default function Footer() {
               </div>
 
               <div className="flex items-start gap-3">
-                <MapPin size={16} style={{ color: "var(--accent)" }} />
+                <MapPin size={42} style={{ color: "var(--accent)" }} />
                 <a
                   href="https://www.google.com/maps?q=Dent-X+Dental+Rajkot"
                   target="_blank"
@@ -136,7 +136,7 @@ export default function Footer() {
                   className="transition-all duration-300 underline-offset-4 hover:underline hover:opacity-90 group-hover:translate-x-1"
 
                 >
-                  M205, Amin Marg, Rajkot, Gujarat 360001
+                  M205, Amin Marg, near vikas pharmacy Railway Crossings, Gujarat Housing Board, Kotecha Nagar, Rajkot, Gujarat 360001
                 </a>
               </div>
             </div>

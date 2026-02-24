@@ -7,10 +7,12 @@ import {
   LayoutDashboard, 
   MessageSquare, 
   ImageIcon, 
+  Users,
   LogOut,
   Menu,
   X,
-  Home
+  Home,
+  Images
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -57,6 +59,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       name: 'Dashboard',
       href: '/admin/dashboard',
       icon: LayoutDashboard,
+    },
+    {
+      name: 'Team',
+      href: '/admin/team',
+      icon: Users,
+    },
+    {
+      name: 'Gallery',
+      href: '/admin/gallery',
+      icon: Images,
     },
     {
       name: 'Testimonials',
