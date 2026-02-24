@@ -52,11 +52,22 @@ export default function ContactPage() {
             </h2>
 
             <div className="space-y-8">
-
               {[
-                { icon: Phone, title: "Phone", value: "+91 8881288859" },
+                {
+                  icon: Phone,
+                  title: "Phone",
+                  value: [
+                    "+91 8881288859",
+                    "+91 98251 79348",
+                    "+91 7405041329"
+                  ]
+                },
                 { icon: Mail, title: "Email", value: "dentxdental2001@gmail.com" },
-                { icon: MapPin, title: "Address", value: "M205, Amin Marg, near vikas pharmacy Railway Crossings, Gujarat Housing Board, Kotecha Nagar, Rajkot, Gujarat 360001" },
+                {
+                  icon: MapPin,
+                  title: "Address",
+                  value: "M205, Amin Marg, near Vikas Pharmacy Railway Crossings, Gujarat Housing Board, Kotecha Nagar, Rajkot, Gujarat 360001"
+                },
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -70,46 +81,24 @@ export default function ContactPage() {
                     <h3 className="font-medium text-[var(--contact-heading)] text-sm sm:text-base">
                       {item.title}
                     </h3>
-                    <p className="text-[var(--contact-text)] text-sm sm:text-base break-words">
-                      {item.value}
-                    </p>
+
+                    {Array.isArray(item.value) ? (
+                      <div className="text-[var(--contact-text)] text-sm sm:text-base space-y-1">
+                        {item.value.map((number, i) => (
+                          <p key={i} className="break-words">
+                            {number}
+                          </p>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[var(--contact-text)] text-sm sm:text-base break-words">
+                        {item.value}
+                      </p>
+                    )}
                   </div>
                 </motion.div>
               ))}
-
-              {/* Working Hours */}
-              <motion.div
-                whileHover={{ x: 6 }}
-                className="flex items-start gap-4 pt-6 border-t border-[var(--contact-border)]"
-              >
-                <Clock className="text-[var(--contact-accent)] mt-1" />
-                <div className="w-full">
-                  <h3 className="font-medium text-[var(--contact-heading)] text-sm sm:text-base">
-                    Working Hours
-                  </h3>
-
-                  <div className="mt-3 text-[var(--contact-text)] text-sm space-y-3">
-
-                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4 border-b pb-2 border-[var(--contact-border)]">
-                      <span className="font-medium">
-                        Monday – Saturday
-                      </span>
-                      <span>
-                        10 am – 2 pm <br className="sm:hidden" />
-                        4 pm – 8 pm
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between text-red-500 font-medium">
-                      <span>Sunday</span>
-                      <span>Closed</span>
-                    </div>
-
-                  </div>
-                </div>
-              </motion.div>
-
-            </div>
+              </div>
           </motion.div>
 
           {/* ===== RIGHT SIDE MAP ===== */}
