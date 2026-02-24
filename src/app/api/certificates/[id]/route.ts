@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
-import Team from '@/models/Team';
+import Certificate from '@/models/Certificate';
 
 export async function GET(
   request: NextRequest,
@@ -10,24 +10,24 @@ export async function GET(
     const { id } = await params;
     await connectDB();
     
-    const teamMember = await Team.findById(id);
+    const certificate = await Certificate.findById(id);
     
-    if (!teamMember) {
+    if (!certificate) {
       return NextResponse.json(
-        { success: false, error: 'Team member not found' },
+        { success: false, error: 'Certificate not found' },
         { status: 404 }
       );
     }
     
     return NextResponse.json({
       success: true,
-      data: teamMember
+      data: certificate
     });
     
   } catch (error) {
-    console.error('GET /api/team/[id] error:', error);
+    console.error('GET /api/certificates/[id] error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch team member' },
+      { success: false, error: 'Failed to fetch certificate' },
       { status: 500 }
     );
   }
@@ -43,56 +43,36 @@ export async function PUT(
     
     const body = await request.json();
     const { 
-      name, 
-      role, 
-      startYear, 
       image,
       priority
     } = body;
     
-    // Check if team member exists
-    const teamMember = await Team.findById(id);
+    // Check if certificate exists
+    const certificate = await Certificate.findById(id);
     
-    if (!teamMember) {
+    if (!certificate) {
       return NextResponse.json(
-        { success: false, error: 'Team member not found' },
+        { success: false, error: 'Certificate not found' },
         { status: 404 }
       );
     }
 
     // Validate required fields if provided
-    if (name !== undefined && !name.trim()) {
+    if (image !== undefined && !image.trim()) {
       return NextResponse.json(
-        { success: false, error: 'Name cannot be empty' },
+        { success: false, error: 'Image cannot be empty' },
         { status: 400 }
       );
-    }
-
-    if (role !== undefined && !role.trim()) {
-      return NextResponse.json(
-        { success: false, error: 'Role cannot be empty' },
-        { status: 400 }
-      );
-    }
-
-    if (startYear !== undefined) {
-      const currentYear = new Date().getFullYear();
-      if (startYear < 1980 || startYear > currentYear) {
-        return NextResponse.json(
-          { success: false, error: 'Start year must be between 1980 and current year' },
-          { status: 400 }
-        );
-      }
     }
 
     // Handle priority updates with reordering
-    if (priority !== undefined && priority !== teamMember.priority) {
-      const oldPriority = teamMember.priority;
+    if (priority !== undefined && priority !== certificate.priority) {
+      const oldPriority = certificate.priority;
       const newPriority = priority;
       
       if (newPriority < oldPriority) {
         // Moving up in priority (lower number), shift others down
-        await Team.updateMany(
+        await Certificate.updateMany(
           { 
             _id: { $ne: id },
             priority: { $gte: newPriority, $lt: oldPriority }
@@ -101,7 +81,7 @@ export async function PUT(
         );
       } else {
         // Moving down in priority (higher number), shift others up
-        await Team.updateMany(
+        await Certificate.updateMany(
           { 
             _id: { $ne: id },
             priority: { $gt: oldPriority, $lte: newPriority }
@@ -113,14 +93,11 @@ export async function PUT(
 
     // Prepare update data
     const updateData: any = {};
-    if (name !== undefined) updateData.name = name.trim();
-    if (role !== undefined) updateData.role = role.trim();
-    if (startYear !== undefined) updateData.startYear = startYear;
     if (image !== undefined) updateData.image = image;
     if (priority !== undefined) updateData.priority = priority;
     
-    // Update team member
-    const updatedTeamMember = await Team.findByIdAndUpdate(
+    // Update certificate
+    const updatedCertificate = await Certificate.findByIdAndUpdate(
       id,
       updateData,
       { new: true, runValidators: true }
@@ -128,11 +105,11 @@ export async function PUT(
     
     return NextResponse.json({
       success: true,
-      data: updatedTeamMember
+      data: updatedCertificate
     });
     
   } catch (error) {
-    console.error('PUT /api/team/[id] error:', error);
+    console.error('PUT /api/certificates/[id] error:', error);
     
     // Handle validation errors
     if (error instanceof Error && error.name === 'ValidationError') {
@@ -143,7 +120,7 @@ export async function PUT(
     }
     
     return NextResponse.json(
-      { success: false, error: 'Failed to update team member' },
+      { success: false, error: 'Failed to update certificate' },
       { status: 500 }
     );
   }
@@ -157,35 +134,35 @@ export async function DELETE(
     const { id } = await params;
     await connectDB();
     
-    const teamMember = await Team.findById(id);
+    const certificate = await Certificate.findById(id);
     
-    if (!teamMember) {
+    if (!certificate) {
       return NextResponse.json(
-        { success: false, error: 'Team member not found' },
+        { success: false, error: 'Certificate not found' },
         { status: 404 }
       );
     }
     
-    const deletedPriority = teamMember.priority;
+    const deletedPriority = certificate.priority;
     
-    // Delete the team member
-    await Team.findByIdAndDelete(id);
+    // Delete the certificate
+    await Certificate.findByIdAndDelete(id);
     
     // Shift priorities down for items that were after the deleted item
-    await Team.updateMany(
+    await Certificate.updateMany(
       { priority: { $gt: deletedPriority } },
       { $inc: { priority: -1 } }
     );
     
     return NextResponse.json({
       success: true,
-      message: 'Team member deleted successfully'
+      message: 'Certificate deleted successfully'
     });
     
   } catch (error) {
-    console.error('DELETE /api/team/[id] error:', error);
+    console.error('DELETE /api/certificates/[id] error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to delete team member' },
+      { success: false, error: 'Failed to delete certificate' },
       { status: 500 }
     );
   }

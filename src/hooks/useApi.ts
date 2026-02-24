@@ -4,14 +4,17 @@ import type {
   BeforeAfterResponse,
   TeamResponse,
   GalleryResponse,
+  CertificateResponse,
   CreateTestimonialRequest,
   CreateBeforeAfterRequest,
   CreateTeamRequest,
   CreateGalleryRequest,
+  CreateCertificateRequest,
   UpdateTestimonialRequest,
   UpdateBeforeAfterRequest,
   UpdateTeamRequest,
   UpdateGalleryRequest,
+  UpdateCertificateRequest,
   ApiResponse,
   PaginationResponse,
   CloudinaryResponse
@@ -433,6 +436,100 @@ export function useGallery() {
     updateGalleryItem,
     deleteGalleryItem,
     getGalleryItem
+  };
+}
+
+// Certificate hook
+export function useCertificates() {
+  const { apiRequest, loading, error } = useApi();
+  const [certificates, setCertificates] = useState<CertificateResponse[]>([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
+
+  const fetchCertificates = async (params?: {
+    page?: number;
+    limit?: number;
+  }) => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.page) queryParams.append('page', params.page.toString());
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+      const response = await apiRequest<PaginationResponse<CertificateResponse>>(
+        `/certificates?${queryParams.toString()}`
+      );
+      
+      if (response.data && Array.isArray((response.data as any).certificates)) {
+        setCertificates((response.data as any).certificates);
+        setPagination((response.data as any).pagination);
+      }
+      return response;
+    } catch (err) {
+      console.error('Error fetching certificates:', err);
+      throw err;
+    }
+  };
+
+  const createCertificate = async (data: CreateCertificateRequest) => {
+    try {
+      const response = await apiRequest<CertificateResponse>('/certificates', 'POST', data);
+      // Refresh the list after creating
+      await fetchCertificates();
+      return response;
+    } catch (err) {
+      console.error('Error creating certificate:', err);
+      throw err;
+    }
+  };
+
+  const updateCertificate = async (id: string, data: UpdateCertificateRequest) => {
+    try {
+      const response = await apiRequest<CertificateResponse>(`/certificates/${id}`, 'PUT', data);
+      // Refresh the list after updating
+      await fetchCertificates();
+      return response;
+    } catch (err) {
+      console.error('Error updating certificate:', err);
+      throw err;
+    }
+  };
+
+  const deleteCertificate = async (id: string) => {
+    try {
+      const response = await apiRequest(`/certificates/${id}`, 'DELETE');
+      // Refresh the list after deleting
+      await fetchCertificates();
+      return response;
+    } catch (err) {
+      console.error('Error deleting certificate:', err);
+      throw err;
+    }
+  };
+
+  const getCertificate = async (id: string) => {
+    try {
+      const response = await apiRequest<CertificateResponse>(`/certificates/${id}`);
+      return response;
+    } catch (err) {
+      console.error('Error fetching certificate:', err);
+      throw err;
+    }
+  };
+
+  return {
+    certificates,
+    pagination,
+    loading,
+    error,
+    fetchCertificates,
+    createCertificate,
+    updateCertificate,
+    deleteCertificate,
+    getCertificate
   };
 }
 
