@@ -1,5 +1,8 @@
 "use client";
 
+// Note: Metadata for this page is handled in a separate metadata.ts file
+// since this is a client component
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -37,6 +40,34 @@ export default function ServicesPage() {
 
   const toggleService = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  // Services Schema for SEO
+  const servicesSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Dental Services at Dent X Dental Clinic",
+    "description": "Comprehensive dental services offered at Dent X Dental Clinic in Rajkot",
+    "numberOfItems": servicesData.length,
+    "itemListElement": servicesData.map((service, index) => ({
+      "@type": "Service",
+      "position": index + 1,
+      "name": service.title,
+      "description": service.short,
+      "provider": {
+        "@type": "Dentist",
+        "name": "Dent X Dental Clinic"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Rajkot",
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Gujarat"
+        }
+      },
+      "url": `https://dentxdental.co.in/services/${service.slug}`
+    }))
   };
 
   return (
@@ -151,6 +182,14 @@ export default function ServicesPage() {
 
         </div>
       </section>
+
+      {/* Services Schema JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(servicesSchema)
+        }}
+      />
     </div>
   );
 }

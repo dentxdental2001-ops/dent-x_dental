@@ -1,5 +1,8 @@
 "use client";
 
+// Note: Metadata for this page is handled in a separate metadata.ts file
+// since this is a client component
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Quote, Loader2 } from "lucide-react";
