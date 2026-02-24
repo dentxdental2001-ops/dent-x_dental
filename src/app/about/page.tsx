@@ -1,9 +1,23 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useTeam, useGallery } from '@/hooks/useApi';
 
 export default function AboutPage() {
+  const { team, loading: teamLoading, error: teamError, fetchTeam } = useTeam();
+  const { gallery, loading: galleryLoading, error: galleryError, fetchGallery } = useGallery();
+
+  useEffect(() => {
+    fetchTeam();
+    fetchGallery();
+  }, []);
+
+  const calculateExperience = (startYear: number) => {
+    const currentYear = new Date().getFullYear();
+    return currentYear - startYear;
+  };
   return (
     <main className="overflow-hidden">
 
@@ -149,93 +163,61 @@ export default function AboutPage() {
       Meet Our Specialists
     </h2>
 
-    <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
+    {teamLoading ? (
+      <div className="flex items-center justify-center py-12">
+        <div className="inline-flex items-center gap-2 text-[#5E6E7E]">
+          <div className="w-5 h-5 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+          Loading team members...
+        </div>
+      </div>
+    ) : teamError ? (
+      <div className="text-center py-12">
+        <p className="text-red-600">Error loading team members: {teamError}</p>
+      </div>
+    ) : team.length === 0 ? (
+      <div className="text-center py-12">
+        <p className="text-[#5E6E7E]">No team members available at the moment.</p>
+      </div>
+    ) : (
+      <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
+        {team.map((member, index) => (
+          <motion.div
+            key={member._id}
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: index * 0.2 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -12 }}
+            className="bg-white/80 backdrop-blur-lg p-12 rounded-3xl shadow-2xl border relative transition-all"
+            style={{ borderColor: "var(--border-light)" }}
+          >
 
-      {[
-        {
-          name: "Dr. John Doe",
-          role: "Chief Dental Surgeon",
-          experience: "15+ Years",
-          patients: "5000+",
-          procedures: "12,000+",
-          img: "doctor1.avif",
-          skills: ["Implants", "Full Mouth Rehab", "Smile Design"]
-        },
-        {
-          name: "Dr. Sarah Patel",
-          role: "Cosmetic & Restorative Specialist",
-          experience: "10+ Years",
-          patients: "3500+",
-          procedures: "8000+",
-          img: "doctor1.avif",
-          skills: ["Veneers", "Teeth Whitening", "Invisalign"]
-        },
-      ].map((doc, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: index * 0.2 }}
-          viewport={{ once: true }}
-          whileHover={{ y: -12 }}
-          className="bg-white/80 backdrop-blur-lg p-12 rounded-3xl shadow-2xl border relative transition-all"
-          style={{ borderColor: "var(--border-light)" }}
-        >
-
-          {/* Experience Badge */}
-          <div className="absolute top-6 right-6 text-xs px-4 py-2 rounded-full"
-               style={{ background: "var(--accent)", color: "white" }}>
-            {doc.experience} Experience
-          </div>
-
-          <div className="relative w-44 h-44 mx-auto mb-8 rounded-full overflow-hidden border-4"
-               style={{ borderColor: "var(--accent)" }}>
-            <Image
-              src={`/team/${doc.img}`}
-              alt={doc.name}
-              fill
-              className="object-cover"
-            />
-          </div>
-
-          <h3 className="text-2xl font-semibold mb-2">{doc.name}</h3>
-          <p style={{ color: "var(--accent)" }} className="mb-6">
-            {doc.role}
-          </p>
-
-          {/* Skills Tags */}
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
-            {doc.skills.map((skill, i) => (
-              <span
-                key={i}
-                className="text-xs px-4 py-2 rounded-full border"
-                style={{ borderColor: "var(--accent)", color: "var(--accent)" }}
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-6 text-center border-t pt-6"
-               style={{ borderColor: "var(--border-light)" }}>
-
-            <div>
-              <p className="text-2xl font-semibold">{doc.patients}</p>
-              <p className="text-xs text-gray-500">Happy Patients</p>
+            {/* Experience Badge */}
+            <div className="absolute top-6 right-6 text-xs px-4 py-2 rounded-full"
+                 style={{ background: "var(--accent)", color: "white" }}>
+              {calculateExperience(member.startYear)}+ Years Experience
             </div>
 
-            <div>
-              <p className="text-2xl font-semibold">{doc.procedures}</p>
-              <p className="text-xs text-gray-500">Procedures Completed</p>
+            <div className="relative w-44 h-44 mx-auto mb-8 rounded-full overflow-hidden border-4"
+                 style={{ borderColor: "var(--accent)" }}>
+              <Image
+                src={member.image}
+                alt={member.name}
+                fill
+                className="object-cover"
+              />
             </div>
 
-          </div>
+            <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
+            <p style={{ color: "var(--accent)" }} className="mb-6">
+              {member.role}
+            </p>
 
-        </motion.div>
-      ))}
+          </motion.div>
+        ))}
+      </div>
+    )}
 
-    </div>
   </div>
 </section>
 
@@ -247,22 +229,75 @@ export default function AboutPage() {
             Our Modern Clinic
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {["clinic1.webp", "clinic2.webp", "clinic3.webp"].map((img, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ scale: 1.03 }}
-                className="relative h-[260px] rounded-2xl overflow-hidden shadow-lg"
+          {galleryLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+                <span className="text-gray-600">Loading gallery...</span>
+              </div>
+            </div>
+          ) : galleryError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Unable to load gallery images</p>
+              <button
+                onClick={() => fetchGallery()}
+                className="px-4 py-2 bg-[#2FA4C5] text-white rounded-md hover:bg-[#248DA8] transition-colors"
               >
-                <Image
-                  src={`/clinic/${img}`}
-                  alt="Clinic"
-                  fill
-                  className="object-cover transition duration-700"
-                />
-              </motion.div>
-            ))}
-          </div>
+                Try Again
+              </button>
+            </div>
+          ) : gallery.length === 0 ? (
+            // Fallback to default images if no gallery items exist
+            <div className="grid md:grid-cols-3 gap-6">
+              {["clinic1.webp", "clinic2.webp", "clinic3.webp"].map((img, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.03 }}
+                  className="relative h-[260px] rounded-2xl overflow-hidden shadow-lg"
+                >
+                  <Image
+                    src={`/clinic/${img}`}
+                    alt="Clinic"
+                    fill
+                    className="object-cover transition duration-700"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {gallery.slice(0, 6).map((item, i) => (
+                <motion.div
+                  key={item._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  whileHover={{ scale: 1.03 }}
+                  viewport={{ once: true }}
+                  className="relative h-[260px] rounded-2xl overflow-hidden shadow-lg"
+                >
+                  <Image
+                    src={item.image}
+                    alt={`Clinic gallery image ${item.priority}`}
+                    fill
+                    className="object-cover transition duration-700"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {gallery.length > 6 && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              viewport={{ once: true }}
+              className="mt-8 text-gray-600"
+            >
+              Showing {Math.min(6, gallery.length)} of {gallery.length} images
+            </motion.p>
+          )}
         </div>
       </section>
 

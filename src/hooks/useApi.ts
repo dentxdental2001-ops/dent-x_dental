@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react';
 import type {
   TestimonialResponse,
   BeforeAfterResponse,
+  TeamResponse,
+  GalleryResponse,
   CreateTestimonialRequest,
   CreateBeforeAfterRequest,
+  CreateTeamRequest,
+  CreateGalleryRequest,
   UpdateTestimonialRequest,
   UpdateBeforeAfterRequest,
+  UpdateTeamRequest,
+  UpdateGalleryRequest,
   ApiResponse,
   PaginationResponse,
   CloudinaryResponse
@@ -219,6 +225,208 @@ export function useBeforeAfter() {
     createBeforeAfter,
     updateBeforeAfter,
     deleteBeforeAfter
+  };
+}
+
+// Team API hook
+export function useTeam() {
+  const { apiRequest, loading, error } = useApi();
+  const [team, setTeam] = useState<TeamResponse[]>([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
+
+  const fetchTeam = async (params?: {
+    page?: number;
+    limit?: number;
+  }) => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.page) queryParams.append('page', params.page.toString());
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+      const response = await apiRequest<PaginationResponse<TeamResponse>>(
+        `/team?${queryParams.toString()}`
+      );
+      
+      setTeam(response.data.team);
+      setPagination(response.data.pagination);
+      return response;
+    } catch (err) {
+      console.error('Error fetching team members:', err);
+      throw err;
+    }
+  };
+
+  const createTeamMember = async (data: CreateTeamRequest) => {
+    try {
+      const response = await apiRequest<TeamResponse>('/team', 'POST', data);
+      // Refresh the list after creating
+      await fetchTeam();
+      return response;
+    } catch (err) {
+      console.error('Error creating team member:', err);
+      throw err;
+    }
+  };
+
+  const updateTeamMember = async (id: string, data: UpdateTeamRequest) => {
+    try {
+      const response = await apiRequest<TeamResponse>(`/team/${id}`, 'PUT', data);
+      // Refresh the list after updating
+      await fetchTeam();
+      return response;
+    } catch (err) {
+      console.error('Error updating team member:', err);
+      throw err;
+    }
+  };
+
+  const deleteTeamMember = async (id: string) => {
+    try {
+      const response = await apiRequest(`/team/${id}`, 'DELETE');
+      // Refresh the list after deleting
+      await fetchTeam();
+      return response;
+    } catch (err) {
+      console.error('Error deleting team member:', err);
+      throw err;
+    }
+  };
+
+  const getTeamMember = async (id: string) => {
+    try {
+      const response = await apiRequest<TeamResponse>(`/team/${id}`);
+      return response;
+    } catch (err) {
+      console.error('Error fetching team member:', err);
+      throw err;
+    }
+  };
+
+  return {
+    team,
+    pagination,
+    loading,
+    error,
+    fetchTeam,
+    createTeamMember,
+    updateTeamMember,
+    deleteTeamMember,
+    getTeamMember
+  };
+}
+
+// Gallery hook
+export function useGallery() {
+  const { apiRequest, loading, error } = useApi();
+  const [gallery, setGallery] = useState<GalleryResponse[]>([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
+
+  const fetchGallery = async (params?: {
+    page?: number;
+    limit?: number;
+  }) => {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params?.page) queryParams.append('page', params.page.toString());
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      
+      const queryString = queryParams.toString();
+      const endpoint = queryString ? `/gallery?${queryString}` : '/gallery';
+      
+      const response = await apiRequest<{
+        gallery: GalleryResponse[];
+        pagination: typeof pagination;
+      }>(endpoint);
+
+      if (response.data) {
+        setGallery(response.data.gallery);
+        setPagination(response.data.pagination);
+      }
+
+      return response;
+    } catch (err) {
+      console.error('Error fetching gallery:', err);
+      throw err;
+    }
+  };
+
+  const createGalleryItem = async (data: CreateGalleryRequest) => {
+    try {
+      const response = await apiRequest<GalleryResponse>('/gallery', 'POST', data);
+
+      if (response.data) {
+        setGallery(prev => [...prev, response.data]);
+      }
+
+      return response;
+    } catch (err) {
+      console.error('Error creating gallery item:', err);
+      throw err;
+    }
+  };
+
+  const updateGalleryItem = async (id: string, data: UpdateGalleryRequest) => {
+    try {
+      const response = await apiRequest<GalleryResponse>(`/gallery/${id}`, 'PUT', data);
+
+      if (response.data) {
+        setGallery(prev => 
+          prev.map(item => item._id === id ? response.data : item)
+        );
+      }
+
+      return response;
+    } catch (err) {
+      console.error('Error updating gallery item:', err);
+      throw err;
+    }
+  };
+
+  const deleteGalleryItem = async (id: string) => {
+    try {
+      const response = await apiRequest<GalleryResponse>(`/gallery/${id}`, 'DELETE');
+
+      if (response.success) {
+        setGallery(prev => prev.filter(item => item._id !== id));
+      }
+
+      return response;
+    } catch (err) {
+      console.error('Error deleting gallery item:', err);
+      throw err;
+    }
+  };
+
+  const getGalleryItem = async (id: string) => {
+    try {
+      const response = await apiRequest<GalleryResponse>(`/gallery/${id}`);
+      return response;
+    } catch (err) {
+      console.error('Error fetching gallery item:', err);
+      throw err;
+    }
+  };
+
+  return {
+    gallery,
+    pagination,
+    loading,
+    error,
+    fetchGallery,
+    createGalleryItem,
+    updateGalleryItem,
+    deleteGalleryItem,
+    getGalleryItem
   };
 }
 
