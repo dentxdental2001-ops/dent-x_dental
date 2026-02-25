@@ -1,17 +1,22 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+// Note: Metadata for this page is handled in a separate metadata.ts file
+// since this is a client component
+
+import { useEffect } from 'react';
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useTeam, useGallery } from '@/hooks/useApi';
+import { useTeam, useGallery, useCertificates } from '@/hooks/useApi';
 
 export default function AboutPage() {
   const { team, loading: teamLoading, error: teamError, fetchTeam } = useTeam();
   const { gallery, loading: galleryLoading, error: galleryError, fetchGallery } = useGallery();
+  const { certificates, loading: certificatesLoading, error: certificatesError, fetchCertificates } = useCertificates();
 
   useEffect(() => {
     fetchTeam();
     fetchGallery();
+    fetchCertificates();
   }, []);
 
   const calculateExperience = (startYear: number) => {
@@ -100,48 +105,70 @@ export default function AboutPage() {
             internationally recognized certifications.
           </p>
 
-          <div className="relative w-full overflow-visible">
-
-            <motion.div
-              className="flex gap-12"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{
-                repeat: Infinity,
-                duration: 20,
-                ease: "linear",
-              }}
-            >
-              {[...["cert1.jpg", "cert1.jpg", "cert1.jpg", "cert1.jpg"],
-              ...["cert1.jpg", "cert1.jpg", "cert1.jpg", "cert1.jpg"]
-              ].map((cert, i) => (
-                <div
-                  key={i}
-                  className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
-                  style={{ borderColor: "var(--border-light)" }}
-                >
-                  {/* Top Accent Line */}
+          {certificatesLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+                <span className="text-gray-600">Loading certificates...</span>
+              </div>
+            </div>
+          ) : certificatesError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Unable to load certificates</p>
+              <button
+                onClick={() => fetchCertificates()}
+                className="px-4 py-2 bg-[#2FA4C5] text-white rounded-md hover:bg-[#248DA8] transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : certificates.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No certificates available at the moment.</p>
+            </div>
+          ) : (
+            <div className="relative w-full overflow-visible">
+              <motion.div
+                className="flex gap-12"
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 20,
+                  ease: "linear",
+                }}
+              >
+                {certificates
+                  .sort((a, b) => a.priority - b.priority)
+                  .map((cert, i) => (
                   <div
-                    className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
-                    style={{ background: "var(--accent)" }}
-                  />
-
-                  <div className="relative h-[260px] mt-6">
-                    <Image
-                      src={`/certificates/${cert}`}
-                      alt="Certificate"
-                      fill
-                      className="object-contain"
+                    key={cert._id}
+                    className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
+                    style={{ borderColor: "var(--border-light)" }}
+                  >
+                    {/* Top Accent Line */}
+                    <div
+                      className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
+                      style={{ background: "var(--accent)" }}
                     />
+
+                    <div className="relative h-[260px] mt-6">
+                      <Image
+                        src={cert.image}
+                        alt={`Certificate ${cert.priority}`}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+
+                    <p className="mt-6 text-sm text-gray-500 text-center">
+                      Certified Excellence Program
+                    </p>
                   </div>
+                ))}
+              </motion.div>
+            </div>
+          )}
 
-                  <p className="mt-6 text-sm text-gray-500 text-center">
-                    Certified Excellence Program
-                  </p>
-                </div>
-              ))}
-            </motion.div>
-
-          </div>
         </div>
       </section>
 
@@ -171,7 +198,9 @@ export default function AboutPage() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
-              {team.map((member, index) => (
+              {team
+                .sort((a, b) => a.priority - b.priority) // Sort by priority (lower number = higher priority)
+                .map((member, index) => (
                 <motion.div
                   key={member._id}
                   initial={{ opacity: 0, y: 60 }}

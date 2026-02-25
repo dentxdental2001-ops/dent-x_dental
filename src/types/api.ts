@@ -13,6 +13,7 @@ export interface PaginationResponse<T> {
     beforeAfters?: T[];
     team?: T[];
     gallery?: T[];
+    certificates?: T[];
     pagination: {
       page: number;
       limit: number;
@@ -93,6 +94,7 @@ export interface CreateTeamRequest {
   role: string;
   startYear: number;
   image: string; // Base64 image string or URL
+  priority?: number; // Optional - will be auto-assigned if not provided
 }
 
 export interface UpdateTeamRequest {
@@ -100,6 +102,7 @@ export interface UpdateTeamRequest {
   role?: string;
   startYear?: number;
   image?: string; // Base64 image string or URL
+  priority?: number;
 }
 
 export interface TeamResponse {
@@ -108,6 +111,7 @@ export interface TeamResponse {
   role: string;
   startYear: number;
   image: string;
+  priority: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -124,6 +128,25 @@ export interface UpdateGalleryRequest {
 }
 
 export interface GalleryResponse {
+  _id: string;
+  image: string;
+  priority: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Certificate Types
+export interface CreateCertificateRequest {
+  image: string; // Base64 image string or URL
+  priority?: number; // Optional - will be auto-assigned if not provided
+}
+
+export interface UpdateCertificateRequest {
+  image?: string; // Base64 image string or URL
+  priority?: number;
+}
+
+export interface CertificateResponse {
   _id: string;
   image: string;
   priority: number;

@@ -5,6 +5,7 @@ export interface ITeam extends Document {
   role: string;
   startYear: number;
   image: string; // Cloudinary URL
+  priority: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,11 @@ const TeamSchema: Schema = new Schema({
   image: {
     type: String,
     required: [true, 'Image is required']
+  },
+  priority: {
+    type: Number,
+    required: [true, 'Priority is required'],
+    min: [1, 'Priority must be at least 1']
   }
 }, {
   timestamps: true
@@ -40,5 +46,6 @@ const TeamSchema: Schema = new Schema({
 TeamSchema.index({ name: 1 });
 TeamSchema.index({ role: 1 });
 TeamSchema.index({ startYear: 1 });
+TeamSchema.index({ priority: 1 });
 
 export default mongoose.models.Team || mongoose.model<ITeam>('Team', TeamSchema);
