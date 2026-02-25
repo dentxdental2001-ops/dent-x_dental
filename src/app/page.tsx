@@ -179,7 +179,7 @@ export default function HomePage() {
             whileHover={{ rotateY: 6, rotateX: -4 }}
             className="rounded-3xl p-10 border"
             style={{
-              background: "var(--background)",
+              background: "var(--why-us-bg)",
               borderColor: "var(--border-light)",
               boxShadow: "0 20px 40px rgba(0,0,0,0.06)",
             }}
@@ -193,7 +193,7 @@ export default function HomePage() {
               <li>✔ Experienced Specialist Team</li>
               <li>✔ Strict Sterilization Protocol</li>
               <li>✔ Patient-Centered Approach</li>
-              <li>✔ Ground Floor Access for Senior Comfort</li>
+              <li>✔ Ground Floor Access for Senior Citizen</li>
               <li>✔ Comfortable & Modern Clinic</li>
             </ul>
           </motion.div>
@@ -295,7 +295,7 @@ export default function HomePage() {
               className="text-5xl font-semibold"
               style={{ color: "var(--accent)" }}
             >
-              <Counter target={5000} />
+              <Counter target={50000} />
             </h3>
             <p className="mt-4 opacity-80">Happy Patients</p>
           </motion.div>
