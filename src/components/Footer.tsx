@@ -109,11 +109,11 @@ export default function Footer() {
             </h3>
 
             <div className="space-y-3 text-sm">
-              <p>Root Canal</p>
+              <p>Single Visit Root Canal</p>
               <p>Dental Implants</p>
-              <p>Teeth Whitening</p>
-              <p>Braces & Aligners</p>
-              <p>Smile Designing</p>
+              <p>Crowns & Bridges</p>
+              <p>Wisdom Tooth Removal</p>
+              <p>Correction of Irregular Teeth</p>
             </div>
           </div>
 

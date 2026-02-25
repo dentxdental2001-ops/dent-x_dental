@@ -100,7 +100,7 @@ export default function ServicesPage() {
                 layout
                 transition={{ duration: 0.5 }}
                 whileHover={{ rotateX: 3, rotateY: -3 }}
-                className={`relative rounded-3xl p-8 border backdrop-blur-xl transition-all duration-500 ${
+                className={`relative rounded-3xl p-8 border transition-all duration-500 ${
                   isActive ? "scale-[1.02]" : ""
                 }`}
                 style={{

@@ -28,7 +28,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mt-4 sm:mt-6 text-sm sm:text-base text-[var(--contact-text)] max-w-xl sm:max-w-2xl mx-auto"
+          className="mt-4 sm:mt-6 text-sm sm:text-base text-[var(--contact-text)] text-lg max-w-xl sm:max-w-2xl mx-auto"
         >
           Reach out to us for appointments or any dental queries.
         </motion.p>
@@ -61,7 +61,7 @@ export default function ContactPage() {
                   title: "Phone",
                   value: [
                     "+91 8881288859",
-                    "+91 98251 79348",
+                    "+91 9825179348",
                     "+91 7405041329"
                   ]
                 },
