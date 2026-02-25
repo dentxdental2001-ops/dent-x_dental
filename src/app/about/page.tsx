@@ -69,7 +69,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="mb-6 leading-relaxed text-lg">
-              Your smile is our priority!, we believe that dental care should be a comfortable and positive experience. Our team of dedicated professionals is here to provide you with the highest quality dental services tailored to your individual needs. We utilize cutting-edge dental technology, including digital X-rays, intraoral cameras and scaner, and laser dentistry, to enhance your experience.Our modern tools allow for faster, safer, and more efficient treatments, ensuring you receive the best care possible.
+              Your smile is our priority! we believe that dental care should be a comfortable and positive experience. Our team of dedicated professionals is here to provide you with the highest quality dental services tailored to your individual needs. We utilize cutting-edge dental technology, including digital X-rays, intraoral cameras and scaner, and laser dentistry, to enhance your experience.Our modern tools allow for faster, safer, and more efficient treatments, ensuring you receive the best care possible.
             </p>
           </motion.div>
 
@@ -159,10 +159,6 @@ export default function AboutPage() {
                         className="object-contain"
                       />
                     </div>
-
-                    <p className="mt-6 text-sm text-gray-500 text-center">
-                      Certified Excellence Program
-                    </p>
                   </div>
                 ))}
               </motion.div>
