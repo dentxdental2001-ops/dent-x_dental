@@ -139,7 +139,7 @@ export default function ContactPage() {
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.67108756871!2d70.78303867533616!3d22.290445879693774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3959cbf3e6a30811%3A0xc5834bf3d67cbcea!2sDent-x%20dental%20speciality%20clinic!5e0!3m2!1sen!2sin!4v1771516009089!5m2!1sen!2sin"
               width="100%"
               height="350"
-              className="sm:h-[450px] lg:h-[550px] transition-transform duration-700 group-hover:scale-105"
+              className="sm:h-[450px] lg:h-[460px] transition-transform duration-700 group-hover:scale-105"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
