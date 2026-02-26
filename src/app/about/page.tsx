@@ -128,41 +128,51 @@ export default function AboutPage() {
             </div>
           ) : (
             <div className="relative w-full overflow-visible">
-              <motion.div
-                className="flex gap-12"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 20,
-                  ease: "linear",
-                }}
-              >
-                {certificates
-                  .sort((a, b) => a.priority - b.priority)
-                  .map((cert, i) => (
-                  <div
-                    key={cert._id}
-                    className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
-                    style={{ borderColor: "var(--border-light)" }}
-                  >
-                    {/* Top Accent Line */}
-                    <div
-                      className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
-                      style={{ background: "var(--accent)" }}
-                    />
+  <motion.div
+    ref={carouselRef}
+    className="flex gap-12 cursor-grab active:cursor-grabbing"
+    drag="x"
+    dragConstraints={{ left: -dragWidth, right: 0 }}
+    dragElastic={0.05}
+    whileTap={{ cursor: "grabbing" }}
 
-                    <div className="relative h-[260px] mt-6">
-                      <Image
-                        src={cert.image}
-                        alt={`Certificate ${cert.priority}`}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
+    // 🔥 Auto scroll
+    animate={{ x: -dragWidth }}
+    transition={{
+      duration: 25,
+      ease: "linear",
+      repeat: Infinity,
+      repeatType: "reverse", // goes back instead of jumping
+    }}
+
+    // 🔥 Pause auto scroll when dragging
+    onDragStart={(e) => e.stopPropagation()}
+  >
+    {certificates
+      .sort((a, b) => a.priority - b.priority)
+      .map((cert) => (
+        <div
+          key={cert._id}
+          className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
+          style={{ borderColor: "var(--border-light)" }}
+        >
+          <div
+            className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
+            style={{ background: "var(--accent)" }}
+          />
+
+          <div className="relative h-[260px] mt-6">
+            <Image
+              src={cert.image}
+              alt={`Certificate ${cert.priority}`}
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      ))}
+  </motion.div>
+</div>
           )}
 
         </div>
