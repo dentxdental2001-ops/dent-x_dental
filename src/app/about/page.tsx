@@ -3,15 +3,20 @@
 // Note: Metadata for this page is handled in a separate metadata.ts file
 // since this is a client component
 
-import { useEffect } from 'react';
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useTeam, useGallery, useCertificates } from '@/hooks/useApi';
+import { useTeam, useGallery, useCertificates } from "@/hooks/useApi";
 
 export default function AboutPage() {
   const { team, loading: teamLoading, error: teamError, fetchTeam } = useTeam();
   const { gallery, loading: galleryLoading, error: galleryError, fetchGallery } = useGallery();
   const { certificates, loading: certificatesLoading, error: certificatesError, fetchCertificates } = useCertificates();
+
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [dragWidth, setDragWidth] = useState(0);
 
   useEffect(() => {
     fetchTeam();
@@ -19,10 +24,19 @@ export default function AboutPage() {
     fetchCertificates();
   }, []);
 
+  useEffect(() => {
+    if (carouselRef.current) {
+      const scrollWidth = carouselRef.current.scrollWidth;
+      const offsetWidth = carouselRef.current.offsetWidth;
+      setDragWidth(scrollWidth - offsetWidth);
+    }
+  }, [certificates]);
+
   const calculateExperience = (startYear: number) => {
     const currentYear = new Date().getFullYear();
     return currentYear - startYear;
   };
+
   return (
     <main className="overflow-hidden">
 
@@ -53,11 +67,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-
       {/* ================= ABOUT CLINIC ================= */}
       <section>
         <div className="container-max grid md:grid-cols-2 gap-16 items-center">
-
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -69,7 +81,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="mb-6 leading-relaxed text-lg">
-              Your smile is our priority! we believe that dental care should be a comfortable and positive experience. Our team of dedicated professionals is here to provide you with the highest quality dental services tailored to your individual needs. We utilize cutting-edge dental technology, including digital X-rays, intraoral cameras and scaner, and laser dentistry, to enhance your experience.Our modern tools allow for faster, safer, and more efficient treatments, ensuring you receive the best care possible.
+              Your smile is our priority!, we believe that dental care should be a comfortable and positive experience. Our team of dedicated professionals is here to provide you with the highest quality dental services tailored to your individual needs. We utilize cutting-edge dental technology, including digital X-rays, intraoral cameras and scaner, and laser dentistry, to enhance your experience.Our modern tools allow for faster, safer, and more efficient treatments, ensuring you receive the best care possible.
             </p>
           </motion.div>
 
@@ -87,10 +99,8 @@ export default function AboutPage() {
               className="object-cover hover:scale-105 transition duration-700"
             />
           </motion.div>
-
         </div>
       </section>
-
 
       {/* ================= CERTIFICATE CAROUSEL ================= */}
       <section style={{ background: "var(--testimonial-bg)" }} className="py-24 overflow-hidden">
@@ -127,56 +137,50 @@ export default function AboutPage() {
               <p className="text-gray-600">No certificates available at the moment.</p>
             </div>
           ) : (
-            <div className="relative w-full overflow-visible">
-  <motion.div
-    ref={carouselRef}
-    className="flex gap-12 cursor-grab active:cursor-grabbing"
-    drag="x"
-    dragConstraints={{ left: -dragWidth, right: 0 }}
-    dragElastic={0.05}
-    whileTap={{ cursor: "grabbing" }}
+            <div className="relative w-full overflow-hidden">
+              <motion.div
+                ref={carouselRef}
+                className="flex gap-12 cursor-grab active:cursor-grabbing"
+                drag="x"
+                dragConstraints={{ left: -dragWidth, right: 0 }}
+                dragElastic={0.05}
+                whileTap={{ cursor: "grabbing" }}
+                animate={{ x: [0, -dragWidth] }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 25,
+                    ease: "linear",
+                  },
+                }}
+              >
+                {certificates
+                  .sort((a, b) => a.priority - b.priority)
+                  .map((cert) => (
+                    <div
+                      key={cert._id}
+                      className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
+                      style={{ borderColor: "var(--border-light)" }}
+                    >
+                      <div
+                        className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
+                        style={{ background: "var(--accent)" }}
+                      />
 
-    // 🔥 Auto scroll
-    animate={{ x: -dragWidth }}
-    transition={{
-      duration: 25,
-      ease: "linear",
-      repeat: Infinity,
-      repeatType: "reverse", // goes back instead of jumping
-    }}
-
-    // 🔥 Pause auto scroll when dragging
-    onDragStart={(e) => e.stopPropagation()}
-  >
-    {certificates
-      .sort((a, b) => a.priority - b.priority)
-      .map((cert) => (
-        <div
-          key={cert._id}
-          className="min-w-[340px] bg-white rounded-3xl shadow-2xl p-10 border relative"
-          style={{ borderColor: "var(--border-light)" }}
-        >
-          <div
-            className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
-            style={{ background: "var(--accent)" }}
-          />
-
-          <div className="relative h-[260px] mt-6">
-            <Image
-              src={cert.image}
-              alt={`Certificate ${cert.priority}`}
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
-      ))}
-  </motion.div>
-</div>
+                      <div className="relative h-[260px] mt-6">
+                        <Image
+                          src={cert.image}
+                          alt={`Certificate ${cert.priority}`}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </motion.div>
+            </div>
           )}
-
-        </div>
-      </section>
 
 
       {/* ================= TEAM ================= */}
