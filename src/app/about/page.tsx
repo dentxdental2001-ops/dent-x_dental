@@ -19,16 +19,27 @@ export default function AboutPage() {
   const [dragWidth, setDragWidth] = useState(0);
 
   useEffect(() => {
-    fetchTeam();
-    fetchGallery();
-    fetchCertificates();
-  }, [fetchTeam, fetchGallery, fetchCertificates]);
+    const loadData = async () => {
+      try {
+        await Promise.all([
+          fetchTeam(),
+          fetchGallery(), 
+          fetchCertificates()
+        ]);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };
+    
+    loadData();
+  }, []);
 
   useEffect(() => {
-    if (carouselRef.current) {
+    if (carouselRef.current && certificates.length > 0) {
       const scrollWidth = carouselRef.current.scrollWidth;
       const offsetWidth = carouselRef.current.offsetWidth;
-      setDragWidth(scrollWidth - offsetWidth);
+      const calculatedDragWidth = Math.max(0, scrollWidth - offsetWidth);
+      setDragWidth(calculatedDragWidth);
     }
   }, [certificates]);
 
@@ -125,30 +136,30 @@ export default function AboutPage() {
             <div className="py-12">Loading certificates...</div>
           ) : certificatesError ? (
             <div className="py-12 text-red-600">
-              Unable to load certificates
+              Unable to load certificates: {certificatesError}
             </div>
           ) : certificates.length === 0 ? (
             <div className="py-12 text-gray-600">
               No certificates available.
             </div>
           ) : (
-            <div className="relative w-full overflow-hidden">
-              <motion.div
-                ref={carouselRef}
-                className="flex gap-12 cursor-grab active:cursor-grabbing"
-                drag="x"
-                dragConstraints={{ left: -dragWidth, right: 0 }}
-                dragElastic={0.05}
-                animate={{ x: [0, -dragWidth] }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    duration: 25,
-                    ease: "linear",
-                  },
-                }}
-              >
+              <div className="relative w-full overflow-visible">
+                <motion.div
+                  ref={carouselRef}
+                  className="flex gap-12 cursor-grab active:cursor-grabbing"
+                  drag="x"
+                  dragConstraints={{ left: dragWidth > 0 ? -dragWidth : 0, right: 0 }}
+                  dragElastic={0.05}
+                  animate={dragWidth > 0 ? { x: [0, -dragWidth] } : {}}
+                  transition={dragWidth > 0 ? {
+                    x: {
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      duration: 25,
+                      ease: "linear",
+                    },
+                  } : {}}
+                >
                 {certificates
                   .sort((a, b) => a.priority - b.priority)
                   .map((cert) => (
@@ -268,9 +279,11 @@ export default function AboutPage() {
                   <Image
                     src={
                       typeof img === "string"
-                        ? img.startsWith("/")
-                          ? img
-                          : `/clinic/${img}`
+                        ? img.startsWith("http")
+                          ? img  // Full URL (Cloudinary)
+                          : img.startsWith("/")
+                          ? img  // Relative path
+                          : `/clinic/${img}`  // Static image
                         : img
                     }
                     alt="Clinic"
