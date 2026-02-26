@@ -137,7 +137,7 @@ export default function AboutPage() {
               <p className="text-gray-600">No certificates available at the moment.</p>
             </div>
           ) : (
-            <div className="relative w-full overflow-hidden">
+            <div className="relative w-full overflow-visible">
               <motion.div
                 ref={carouselRef}
                 className="flex gap-12 cursor-grab active:cursor-grabbing"
