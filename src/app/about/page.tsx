@@ -1,5 +1,10 @@
 "use client";
 
+// Note: Metadata for this page is handled in a separate metadata.ts file
+// since this is a client component
+
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -8,38 +13,22 @@ import { useTeam, useGallery, useCertificates } from "@/hooks/useApi";
 export default function AboutPage() {
   const { team, loading: teamLoading, error: teamError, fetchTeam } = useTeam();
   const { gallery, loading: galleryLoading, error: galleryError, fetchGallery } = useGallery();
-  const {
-    certificates,
-    loading: certificatesLoading,
-    error: certificatesError,
-    fetchCertificates,
-  } = useCertificates();
+  const { certificates, loading: certificatesLoading, error: certificatesError, fetchCertificates } = useCertificates();
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const [dragWidth, setDragWidth] = useState(0);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        await Promise.all([
-          fetchTeam(),
-          fetchGallery(), 
-          fetchCertificates()
-        ]);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      }
-    };
-    
-    loadData();
+    fetchTeam();
+    fetchGallery();
+    fetchCertificates();
   }, []);
 
   useEffect(() => {
-    if (carouselRef.current && certificates.length > 0) {
+    if (carouselRef.current) {
       const scrollWidth = carouselRef.current.scrollWidth;
       const offsetWidth = carouselRef.current.offsetWidth;
-      const calculatedDragWidth = Math.max(0, scrollWidth - offsetWidth);
-      setDragWidth(calculatedDragWidth);
+      setDragWidth(scrollWidth - offsetWidth);
     }
   }, [certificates]);
 
@@ -53,7 +42,7 @@ export default function AboutPage() {
 
       {/* ================= HERO SECTION ================= */}
       <section className="relative py-28 text-center">
-        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[#2E8B57]/10 blur-3xl rounded-full" />
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[#2E8B57]/10 blur-3xl rounded-full"></div>
 
         <div className="container-max relative z-10">
           <motion.h1
@@ -92,11 +81,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="mb-6 leading-relaxed text-lg">
-              Your smile is our priority! We believe dental care should be
-              comfortable and positive. Our team provides high-quality,
-              personalized dental services using advanced tools like digital
-              X-rays, intraoral cameras, scanners, and laser dentistry for
-              faster, safer, and more efficient treatments.
+              Your smile is our priority!, we believe that dental care should be a comfortable and positive experience. Our team of dedicated professionals is here to provide you with the highest quality dental services tailored to your individual needs. We utilize cutting-edge dental technology, including digital X-rays, intraoral cameras and scaner, and laser dentistry, to enhance your experience.Our modern tools allow for faster, safer, and more efficient treatments, ensuring you receive the best care possible.
             </p>
           </motion.div>
 
@@ -117,12 +102,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ================= CERTIFICATES ================= */}
-      <section
-        style={{ background: "var(--testimonial-bg)" }}
-        className="py-24 overflow-hidden"
-      >
+      {/* ================= CERTIFICATE CAROUSEL ================= */}
+      <section style={{ background: "var(--testimonial-bg)" }} className="py-24 overflow-hidden">
         <div className="container-max text-center">
+
           <h2 className="text-4xl font-semibold mb-4">
             Certifications & Professional Excellence
           </h2>
@@ -133,33 +116,45 @@ export default function AboutPage() {
           </p>
 
           {certificatesLoading ? (
-            <div className="py-12">Loading certificates...</div>
+            <div className="flex items-center justify-center py-12">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+                <span className="text-gray-600">Loading certificates...</span>
+              </div>
+            </div>
           ) : certificatesError ? (
-            <div className="py-12 text-red-600">
-              Unable to load certificates: {certificatesError}
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Unable to load certificates</p>
+              <button
+                onClick={() => fetchCertificates()}
+                className="px-4 py-2 bg-[#2FA4C5] text-white rounded-md hover:bg-[#248DA8] transition-colors"
+              >
+                Try Again
+              </button>
             </div>
           ) : certificates.length === 0 ? (
-            <div className="py-12 text-gray-600">
-              No certificates available.
+            <div className="text-center py-12">
+              <p className="text-gray-600">No certificates available at the moment.</p>
             </div>
           ) : (
-              <div className="relative w-full overflow-visible">
-                <motion.div
-                  ref={carouselRef}
-                  className="flex gap-12 cursor-grab active:cursor-grabbing"
-                  drag="x"
-                  dragConstraints={{ left: dragWidth > 0 ? -dragWidth : 0, right: 0 }}
-                  dragElastic={0.05}
-                  animate={dragWidth > 0 ? { x: [0, -dragWidth] } : {}}
-                  transition={dragWidth > 0 ? {
-                    x: {
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                      duration: 25,
-                      ease: "linear",
-                    },
-                  } : {}}
-                >
+            <div className="relative w-full overflow-hidden">
+              <motion.div
+                ref={carouselRef}
+                className="flex gap-12 cursor-grab active:cursor-grabbing"
+                drag="x"
+                dragConstraints={{ left: -dragWidth, right: 0 }}
+                dragElastic={0.05}
+                whileTap={{ cursor: "grabbing" }}
+                animate={{ x: [0, -dragWidth] }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    duration: 25,
+                    ease: "linear",
+                  },
+                }}
+              >
                 {certificates
                   .sort((a, b) => a.priority - b.priority)
                   .map((cert) => (
@@ -172,10 +167,11 @@ export default function AboutPage() {
                         className="absolute top-0 left-0 w-full h-2 rounded-t-3xl"
                         style={{ background: "var(--accent)" }}
                       />
+
                       <div className="relative h-[260px] mt-6">
                         <Image
                           src={cert.image}
-                          alt="Certificate"
+                          alt={`Certificate ${cert.priority}`}
                           fill
                           className="object-contain"
                         />
@@ -185,107 +181,115 @@ export default function AboutPage() {
               </motion.div>
             </div>
           )}
-        </div>
-      </section>
+
 
       {/* ================= TEAM ================= */}
+      </div>
+      </section>
+
       <section className="py-24">
         <div className="container-max text-center">
+
           <h2 className="text-4xl font-semibold mb-16">
             Meet Our Specialists
           </h2>
 
           {teamLoading ? (
-            <div className="py-12">Loading team members...</div>
+            <div className="flex items-center justify-center py-12">
+              <div className="inline-flex items-center gap-2 text-[#5E6E7E]">
+                <div className="w-5 h-5 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+                Loading team members...
+              </div>
+            </div>
           ) : teamError ? (
-            <div className="py-12 text-red-600">
-              Error loading team members
+            <div className="text-center py-12">
+              <p className="text-red-600">Error loading team members: {teamError}</p>
             </div>
           ) : team.length === 0 ? (
-            <div className="py-12 text-gray-600">
-              No team members available.
+            <div className="text-center py-12">
+              <p className="text-[#5E6E7E]">No team members available at the moment.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-16 max-w-6xl mx-auto">
               {team
-                .sort((a, b) => a.priority - b.priority)
+                .sort((a, b) => a.priority - b.priority) // Sort by priority (lower number = higher priority)
                 .map((member, index) => (
-                  <motion.div
-                    key={member._id}
-                    initial={{ opacity: 0, y: 60 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: index * 0.2 }}
-                    viewport={{ once: true }}
-                    whileHover={{ y: -12 }}
-                    className="bg-white p-12 rounded-3xl shadow-2xl border relative"
-                    style={{ borderColor: "var(--border-light)" }}
-                  >
-                    <div
-                      className="absolute top-6 right-6 text-xs px-4 py-2 rounded-full"
-                      style={{ background: "var(--accent)", color: "white" }}
-                    >
-                      {calculateExperience(member.startYear)}+ Years Experience
-                    </div>
+                <motion.div
+                  key={member._id}
+                  initial={{ opacity: 0, y: 60 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -12 }}
+                  className="bg-white/80 backdrop-blur-lg p-12 rounded-3xl shadow-2xl border relative transition-all"
+                  style={{ borderColor: "var(--border-light)" }}
+                >
 
-                    <div
-                      className="relative w-44 h-44 mx-auto mb-8 rounded-full overflow-hidden border-4"
-                      style={{ borderColor: "var(--accent)" }}
-                    >
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                  {/* Experience Badge */}
+                  <div className="absolute top-6 right-6 text-xs px-4 py-2 rounded-full"
+                    style={{ background: "var(--accent)", color: "white" }}>
+                    {calculateExperience(member.startYear)}+ Years Experience
+                  </div>
 
-                    <h3 className="text-2xl font-semibold mb-2">
-                      {member.name}
-                    </h3>
-                    <p style={{ color: "var(--accent)" }}>
-                      {member.role}
-                    </p>
-                  </motion.div>
-                ))}
+                  <div className="relative w-44 h-44 mx-auto mb-8 rounded-full overflow-hidden border-4"
+                    style={{ borderColor: "var(--accent)" }}>
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
+                  <p style={{ color: "var(--accent)" }} className="mb-6">
+                    {member.role}
+                  </p>
+
+                </motion.div>
+              ))}
             </div>
           )}
+
         </div>
       </section>
 
-      {/* ================= GALLERY ================= */}
-      <section className="pb-24">
+
+      {/* ================= CLINIC GALLERY ================= */}
+      <section>
         <div className="container-max text-center">
           <h2 className="text-3xl font-semibold mb-12">
             Our Modern Clinic
           </h2>
 
           {galleryLoading ? (
-            <div className="py-12">Loading gallery...</div>
-          ) : galleryError ? (
-            <div className="py-12 text-red-600">
-              Unable to load gallery
+            <div className="flex items-center justify-center py-12">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 border-2 border-[#2FA4C5]/30 border-t-[#2FA4C5] rounded-full animate-spin" />
+                <span className="text-gray-600">Loading gallery...</span>
+              </div>
             </div>
-          ) : (
+          ) : galleryError ? (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Unable to load gallery images</p>
+              <button
+                onClick={() => fetchGallery()}
+                className="px-4 py-2 bg-[#2FA4C5] text-white rounded-md hover:bg-[#248DA8] transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : gallery.length === 0 ? (
+            // Fallback to default images if no gallery items exist
             <div className="grid md:grid-cols-3 gap-6">
-              {(gallery.length === 0
-                ? ["clinic1.webp", "clinic2.webp", "clinic3.webp"]
-                : gallery.slice(0, 6).map((g) => g.image)
-              ).map((img, i) => (
+              {["clinic1.webp", "clinic2.webp", "clinic3.webp"].map((img, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.03 }}
                   className="relative h-[260px] rounded-2xl overflow-hidden shadow-lg"
                 >
                   <Image
-                    src={
-                      typeof img === "string"
-                        ? img.startsWith("http")
-                          ? img  // Full URL (Cloudinary)
-                          : img.startsWith("/")
-                          ? img  // Relative path
-                          : `/clinic/${img}`  // Static image
-                        : img
-                    }
+                    src={`/clinic/${img}`}
                     alt="Clinic"
                     fill
                     className="object-cover transition duration-700"
@@ -293,6 +297,39 @@ export default function AboutPage() {
                 </motion.div>
               ))}
             </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {gallery.slice(0, 6).map((item, i) => (
+                <motion.div
+                  key={item._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  whileHover={{ scale: 1.03 }}
+                  viewport={{ once: true }}
+                  className="relative h-[260px] rounded-2xl overflow-hidden shadow-lg"
+                >
+                  <Image
+                    src={item.image}
+                    alt={`Clinic gallery image ${item.priority}`}
+                    fill
+                    className="object-cover transition duration-700"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {gallery.length > 6 && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              viewport={{ once: true }}
+              className="mt-8 text-gray-600"
+            >
+              Showing {Math.min(6, gallery.length)} of {gallery.length} images
+            </motion.p>
           )}
         </div>
       </section>
