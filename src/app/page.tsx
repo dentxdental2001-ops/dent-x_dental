@@ -171,7 +171,7 @@ export default function HomePage() {
             </h2>
 
             <p className="text-[var(--text)] leading-relaxed mb-6">
-              With over two decades of excellence and 5000+ satisfied patients,
+              With over two decades of excellence and 50,000+ satisfied patients,
               Dent-X Dental has built a strong reputation for ethical,
               technology-driven and patient-focused dentistry.
             </p>
