@@ -31,7 +31,7 @@ export default function Footer() {
 
             <p className="leading-relaxed text-sm mb-6">
               Your trusted partner in dental health with 25+ years of excellence
-              serving 5,000+ happy patients.
+              serving 50,000+ happy patients.
             </p>
 
             {/* Social Icons */}
