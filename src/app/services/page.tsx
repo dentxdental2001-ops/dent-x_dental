@@ -166,9 +166,17 @@ export default function ServicesPage() {
                           <h4 className="font-semibold mb-3 text-[var(--accent)]">
                             How We Treat It
                           </h4>
-                          <p className="text-sm leading-relaxed text-[var(--text)]">
-                            {service.detail.treatment}
-                          </p>
+                          {service.detail.treatments ? (
+  <ul className="text-sm leading-relaxed text-[var(--text)] list-disc pl-5 space-y-1">
+    {service.detail.treatments.map((item: string, i: number) => (
+      <li key={i}>{item}</li>
+    ))}
+  </ul>
+) : (
+  <p className="text-sm leading-relaxed text-[var(--text)]">
+    {service.detail.treatment}
+  </p>
+)}
                         </div>
 
                       </div>
