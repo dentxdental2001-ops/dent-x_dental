@@ -163,9 +163,11 @@ export default function ServicesPage() {
                         </div>
 
                         <div>
-                          <h4 className="font-semibold mb-3 text-[var(--accent)]">
-                            How We Treat It
-                          </h4>
+                         <h4 className="font-semibold mb-3 text-[var(--accent)]">
+    {service.detail.treatments
+      ? "What Treatments We Provide"
+      : "How We Treat It"}
+  </h4>
                           {service.detail.treatments ? (
   <ul className="text-sm leading-relaxed text-[var(--text)] list-disc pl-5 space-y-1">
     {service.detail.treatments.map((item: string, i: number) => (
