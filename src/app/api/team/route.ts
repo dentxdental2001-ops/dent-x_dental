@@ -6,9 +6,16 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
     
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '1000');
+    const skip = (page - 1) * limit;
+    
     const team = await Team
       .find({})
-      .sort({ priority: 1, startYear: 1, createdAt: -1 }); // Sort by priority first, then by start year, then by creation date
+      .sort({ priority: 1, startYear: 1, createdAt: -1 }) // Sort by priority first, then by start year, then by creation date
+      .skip(skip)
+      .limit(limit);
     
     const total = await Team.countDocuments({});
     
@@ -16,7 +23,12 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         team,
-        total
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit)
+        }
       }
     });
     
@@ -28,7 +40,6 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
 
 export async function POST(request: NextRequest) {
   try {

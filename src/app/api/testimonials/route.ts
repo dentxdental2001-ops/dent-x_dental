@@ -6,9 +6,16 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
     
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '1000');
+    const skip = (page - 1) * limit;
+    
     const testimonials = await Testimonial
       .find({})
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
     
     const total = await Testimonial.countDocuments({});
     
@@ -16,7 +23,12 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         testimonials,
-        total
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit)
+        }
       }
     });
     
