@@ -6,16 +6,11 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
     
-    const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const skip = (page - 1) * limit;
+    await connectDB();
     
     const gallery = await Gallery
       .find({})
-      .sort({ priority: 1, createdAt: -1 }) // Sort by priority first, then by creation date
-      .skip(skip)
-      .limit(limit);
+      .sort({ priority: 1, createdAt: -1 }); // Sort by priority first, then by creation date
     
     const total = await Gallery.countDocuments({});
     
@@ -23,12 +18,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         gallery,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        total
       }
     });
     
