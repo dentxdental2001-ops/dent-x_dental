@@ -4,28 +4,30 @@ import Gallery from '@/models/Gallery';
 
 
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest) {
   try {
-    const { id } = await params;
     await connectDB();
-    const galleryItem = await Gallery.findById(id);
-    if (!galleryItem) {
-      return NextResponse.json(
-        { success: false, error: 'Gallery item not found' },
-        { status: 404 }
-      );
-    }
+    
+    await connectDB();
+    
+    const gallery = await Gallery
+      .find({})
+      .sort({ priority: 1, createdAt: -1 }); // Sort by priority first, then by creation date
+    
+    const total = await Gallery.countDocuments({});
+    
     return NextResponse.json({
       success: true,
-      data: galleryItem
+      data: {
+        gallery,
+        total
+      }
     });
+    
   } catch (error) {
-    console.error('GET /api/gallery/[id] error:', error);
+    console.error('GET /api/gallery error:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch gallery item' },
+      { success: false, error: 'Failed to fetch gallery images' },
       { status: 500 }
     );
   }

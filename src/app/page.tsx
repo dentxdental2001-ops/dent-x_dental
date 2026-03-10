@@ -61,11 +61,12 @@ export default function HomePage() {
 
   const fetchLatestBeforeAfters = async () => {
     try {
-      const response = await fetch('/api/before-after?limit=2');
+      const response = await fetch('/api/before-after');
       const data = await response.json();
       
       if (data.success) {
-        setBeforeAfters(data.data.beforeAfters);
+        const shuffled = [...data.data.beforeAfters].sort(() => 0.5 - Math.random());
+        setBeforeAfters(shuffled.slice(0, 2));
       }
     } catch (error) {
       console.error('Failed to fetch before/after data:', error);

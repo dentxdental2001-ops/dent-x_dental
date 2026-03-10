@@ -9,10 +9,7 @@ export async function GET(request: NextRequest) {
     await connectDB();
     
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
     const treatment = searchParams.get('treatment');
-    const skip = (page - 1) * limit;
     
     let query: any = {};
     
@@ -23,9 +20,7 @@ export async function GET(request: NextRequest) {
     
     const beforeAfters = await BeforeAfter
       .find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+      .sort({ createdAt: -1 });
     
     // Debug: Log the IDs of fetched records
     console.log('Fetched records:', beforeAfters.map(item => ({ 
@@ -34,18 +29,13 @@ export async function GET(request: NextRequest) {
     })));
     
     const total = await BeforeAfter.countDocuments(query);
-    console.log(`Total records: ${total}, Page: ${page}, Limit: ${limit}`);
+    console.log(`Total records: ${total}`);
     
     return NextResponse.json({
       success: true,
       data: {
         beforeAfters,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        total
       }
     });
     

@@ -182,13 +182,6 @@ export default function AdminGalleryPage() {
 
                         {/* Edit/Delete */}
                         <div className="flex items-center gap-2">
-                          <Link
-                            href={`/admin/gallery/${item._id}/edit`}
-                            className="p-2 text-gray-600 hover:text-[#2FA4C5] hover:bg-gray-100 rounded transition-colors"
-                            title="Edit"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                          </Link>
                           <button
                             onClick={() => handleDelete(item)}
                             disabled={deleteLoading === item._id}
