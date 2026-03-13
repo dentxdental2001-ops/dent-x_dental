@@ -403,7 +403,7 @@ export default function HomePage() {
           name: "Rajesh Patel",
           initials: "RP",
           time: "2 weeks ago",
-          text: "Excellent dental care! Dr. Chirag is highly skilled and the entire team is very professional. Got my implant done here and the results are amazing. Highly recommend Dent-X Dental!",
+          text: "Excellent dental care! Dr. Brijesh is highly skilled and the entire team is very professional. Got my implant done here and the results are amazing. Highly recommend Dent-X Dental!",
         },
         {
           name: "Priya Sharma",
