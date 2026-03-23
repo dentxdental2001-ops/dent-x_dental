@@ -53,7 +53,7 @@ export default function ServicesPage() {
       {/* HERO */}
       <section className="text-center relative z-10">
         <h1 className="text-5xl md:text-6xl font-semibold">
-          My <span className="text-[var(--accent)]">Services</span>
+          Our <span className="text-[var(--accent)]">Services</span>
         </h1>
         <p className="mt-6 max-w-2xl mx-auto text-[var(--text)] text-lg">
           Advanced dental solutions crafted with precision, technology and care.
