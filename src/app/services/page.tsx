@@ -36,7 +36,13 @@ const iconMap: any = {
 };
 
 export default function ServicesPage() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+useEffect(() => {
+  setTimeout(() => {
+    setActiveIndex(0);
+  }, 100);
+}, []);
 
   const toggleService = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
