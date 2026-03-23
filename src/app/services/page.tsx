@@ -1,9 +1,6 @@
 "use client";
 
-// Note: Metadata for this page is handled in a separate metadata.ts file
-// since this is a client component
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Stethoscope,
@@ -38,54 +35,25 @@ const iconMap: any = {
 export default function ServicesPage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-useEffect(() => {
-  setTimeout(() => {
-    setActiveIndex(0);
-  }, 100);
-}, []);
+  // Optional: open first item AFTER render (no scroll bug)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActiveIndex(0);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleService = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  // Services Schema for SEO
-  const servicesSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Dental Services at Dent X Dental Clinic",
-    "description": "Comprehensive dental services offered at Dent X Dental Clinic in Rajkot",
-    "numberOfItems": servicesData.length,
-    "itemListElement": servicesData.map((service, index) => ({
-      "@type": "Service",
-      "position": index + 1,
-      "name": service.title,
-      "description": service.short,
-      "provider": {
-        "@type": "Dentist",
-        "name": "Dent X Dental Clinic"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Rajkot",
-        "containedInPlace": {
-          "@type": "State",
-          "name": "Gujarat"
-        }
-      },
-      "url": `https://dentxdental.co.in/services/${service.slug}`
-    }))
-  };
-
   return (
-    <div className="relative overflow-hidden bg-[var(--background)]">
-
-      {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[var(--accent)]/10 blur-3xl rounded-full opacity-40 pointer-events-none" />
+    <div className="relative overflow-hidden bg-[var(--background)] min-h-screen">
 
       {/* HERO */}
       <section className="text-center relative z-10">
         <h1 className="text-5xl md:text-6xl font-semibold">
-          Our <span className="text-[var(--accent)]">Services</span>
+          My <span className="text-[var(--accent)]">Services</span>
         </h1>
         <p className="mt-6 max-w-2xl mx-auto text-[var(--text)] text-lg">
           Advanced dental solutions crafted with precision, technology and care.
@@ -103,10 +71,9 @@ useEffect(() => {
             return (
               <motion.div
                 key={service.slug}
-                layout
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
                 whileHover={{ rotateX: 3, rotateY: -3 }}
-                className={`relative rounded-3xl p-8 border transition-all duration-500 ${
+                className={`relative rounded-3xl p-8 border transition-all duration-300 ${
                   isActive ? "scale-[1.02]" : ""
                 }`}
                 style={{
@@ -123,8 +90,6 @@ useEffect(() => {
                   className="cursor-pointer flex justify-between items-center"
                 >
                   <div className="flex items-center gap-5">
-
-                    {/* Icon Circle */}
                     <div className="w-14 h-14 rounded-full bg-[var(--accent)]/15 flex items-center justify-center shadow-inner">
                       <Icon className="text-[var(--accent)]" size={24} />
                     </div>
@@ -141,21 +106,21 @@ useEffect(() => {
 
                   <motion.div
                     animate={{ rotate: isActive ? 180 : 0 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.3 }}
                   >
                     <ChevronDown />
                   </motion.div>
                 </div>
 
                 {/* Expand Section */}
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {isActive && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="overflow-visible"
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
                     >
                       <div className="grid md:grid-cols-2 gap-8 mt-10">
 
@@ -169,22 +134,23 @@ useEffect(() => {
                         </div>
 
                         <div>
-                         <h4 className="font-semibold mb-3 text-[var(--accent)]">
-    {service.detail.treatments
-      ? "What Treatments We Provide"
-      : "How We Treat It"}
-  </h4>
+                          <h4 className="font-semibold mb-3 text-[var(--accent)]">
+                            {service.detail.treatments
+                              ? "What Treatments We Provide"
+                              : "How We Treat It"}
+                          </h4>
+
                           {service.detail.treatments ? (
-  <ul className="text-sm leading-relaxed text-[var(--text)] list-disc pl-5 space-y-1">
-    {service.detail.treatments.map((item: string, i: number) => (
-      <li key={i}>{item}</li>
-    ))}
-  </ul>
-) : (
-  <p className="text-sm leading-relaxed text-[var(--text)]">
-    {service.detail.treatment}
-  </p>
-)}
+                            <ul className="text-sm leading-relaxed text-[var(--text)] list-disc pl-5 space-y-1">
+                              {service.detail.treatments.map((item: string, i: number) => (
+                                <li key={i}>{item}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-sm leading-relaxed text-[var(--text)]">
+                              {service.detail.treatment}
+                            </p>
+                          )}
                         </div>
 
                       </div>
@@ -198,14 +164,6 @@ useEffect(() => {
 
         </div>
       </section>
-
-      {/* Services Schema JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(servicesSchema)
-        }}
-      />
     </div>
   );
 }
